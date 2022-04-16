@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { styled, ThemeProvider } from '@mui/system';
 import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip, Menu, MenuItem, ListItemIcon, Divider, Typography} from '@mui/material';
 
 import {PersonAdd, Settings, Logout} from '@mui/icons-material';
-
+import Button from '@mui/material/Button';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,6 +12,9 @@ import { Bell as BellIcon } from '../assets/icons/bell';
 import { UserCircle as UserCircleIcon } from '../assets/icons/user-circle';
 import { Users as UsersIcon } from '../assets/icons/users';
 import theme from '../theme/theme';
+import { logout } from '../../Business Layer/thunks/auth/auth.thunk';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -21,16 +24,25 @@ const DashboardNavbarRoot = styled(AppBar)(( {theme} ) => ({
   boxShadow: theme.shadows[3]
 }));
 
-export const Navbar = (props) => {
-  const { onSidebarOpen, ...other } = props;
+const Navbar = function (props) {
+  const navigate = useNavigate()
+  const { onSidebarOpen, logout, ...other } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    console.log('Logout Pressed');
+    return navigate('/login');
   };
 
   return (
@@ -76,7 +88,9 @@ export const Navbar = (props) => {
               <UsersIcon fontSize="small" />
             </IconButton>
           </Tooltip> */}
-          <Tooltip title="Notifications">
+
+          
+          {/* <Tooltip title="Notifications">
             <IconButton sx={{ ml: 1 }}>
               <Badge
                 badgeContent={4}
@@ -86,7 +100,7 @@ export const Navbar = (props) => {
                 <BellIcon fontSize="small" />
               </Badge>
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
 
           <Tooltip title="Account settings">
           <IconButton
@@ -164,14 +178,16 @@ export const Navbar = (props) => {
           </ListItemIcon>
           Settings
         </MenuItem> */}
-        <MenuItem>
+
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
+
       </Menu>
-          
+    
         </Toolbar>
       </DashboardNavbarRoot>
       </ThemeProvider>
@@ -180,7 +196,21 @@ export const Navbar = (props) => {
 };
 
 Navbar.propTypes = {
-  onSidebarOpen: PropTypes.func
+  onSidebarOpen: PropTypes.func,
 };
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
 
 

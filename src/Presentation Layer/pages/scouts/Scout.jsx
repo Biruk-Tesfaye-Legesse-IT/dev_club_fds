@@ -1,22 +1,20 @@
 import { useState, useEffect } from 'react';
 // import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Navbar } from '../components/navbar';
-import { Sidebar } from '../components/sidebar';
+import Navbar from '../../components/navbar';
+import { Sidebar } from '../../components/sidebar';
 
 import { Box, Container, Grid } from '@mui/material';
-import { Budget } from '../components/event/budget';
-import LatestOrders from '../components/event/latest-orders';
-// import LatestProducts from '../components/event/latest-products';
-// import { Sales } from '../components/event/sales';
-import { TasksProgress } from '../components/event/tasks-progress';
-import { TotalCustomers } from '../components/event/total-customers';
-import { TotalProfit } from '../components/event/total-profit';
-// import { TrafficByDevice } from '../components/event/traffic-by-device';
-// import { DashboardLayout } from '../components/event-layout';
+import { Budget } from '../../components/event/budget';
+import LatestOrders from '../../components/event/latest-orders';
+// import LatestProducts from '../../components/event/latest-products';
+// import { Sales } from '../../components/event/sales';
+import { TasksProgress } from '../../components/event/tasks-progress';
+import { TotalCustomers } from '../../components/event/total-customers';
+import { TotalProfit } from '../../components/event/total-profit';
+// import { TrafficByDevice } from '../../components/event/traffic-by-device';
+// import { DashboardLayout } from '../../components/event-layout';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { getEvents } from "../../Business Layer/thunks/event/events.thunk";
 
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
@@ -29,12 +27,13 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   }
 }));
 
-export const Event= () => {
+export const Scout= () => {
   // const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
- 
+  
 
+  
 
 
   return (
@@ -154,4 +153,4 @@ export const Event= () => {
 };
 
 
-export default Event;
+export default Scout;

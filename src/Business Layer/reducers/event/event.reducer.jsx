@@ -3,32 +3,32 @@ import eventActionTypes from '../../actions/event/event.action.types';
 const initialState = {
     events: [],
     event: {},
-    loading: true,
+    eventsLoading: true,
     error: null,
 
 }
 
 
 export default function eventsReducer(state = initialState, action) {
-    console.log('eventReducer', action);
+    // console.log('eventReducer', action);
     switch (action.type) {
         case eventActionTypes.EVENTS_LOADING:
             return {
                 ...state,
-                loading: true,
+                eventsLoading: true,
                 error: null
             }
         case eventActionTypes.EVENTS_LOADED:
             return {
                 ...state,
                 events: action.payload,
-                loading: false,
+                eventsLoading: false,
             };
 
         case eventActionTypes.EVENTS_LOADING_ERROR:
             return {
                 ...state,
-                isLoading: false,
+                eventsLoading: false,
                 error: action.payload,
             };
     

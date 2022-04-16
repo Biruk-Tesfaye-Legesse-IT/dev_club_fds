@@ -1,12 +1,12 @@
 import http from "../../helpers/client/api.client";
 
-const EVENT_ENDPOINT = "/api/event/"
+const SCOUT_ENDPOINT = "/api/event/"
 
-class EventDataService {
-    getAllEvents = () => http.get('/api/clubs/1/');
+class ScoutDataService {
+    getAllScouts = () => http().get('/api/scouts/');
 
     getEvent(id) {
-        return http.get(`${EVENT_ENDPOINT}${id}`);
+        return http().get(`${EVENT_ENDPOINT}${id}`);
     }
     createEvent(data) {
         return http.post(`${EVENT_ENDPOINT}`, data);
@@ -24,4 +24,5 @@ class EventDataService {
         return http.get(`${EVENT_ENDPOINT}?title=${title}`);
     }
 }
-export default new EventDataService();
+export default new ScoutDataService();
+s

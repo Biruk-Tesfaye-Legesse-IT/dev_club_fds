@@ -7,6 +7,7 @@ import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import PeopleIcon from '@mui/icons-material/People';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const items = [
   {
@@ -16,10 +17,16 @@ const items = [
     title: 'Events'
   },
   {
+    href: '/scouts',
+    icon: (<PeopleIcon/>),
+    title: 'Scouts'
+  },
+  {
     href: '/account',
     icon: (<ManageAccountsRoundedIcon/>),
-    title: 'Manage Account'
+    title: 'Account'
   },
+
   // {
   //   href: '/products',
   //   icon: (<ShoppingBagIcon fontSize="small" />),
@@ -153,7 +160,8 @@ export const Sidebar = (props) => {
         />
         <Box sx={{ flexGrow: 1 }}>
           {items.map((item) => (
-            <NavItem
+            <NavItem 
+              style={{ textDecoration: 'none' }}
               key={item.title}
               icon={item.icon}
               href={item.href}
@@ -178,7 +186,7 @@ export const Sidebar = (props) => {
             color="neutral.500"
             variant="body2"
           >
-            Copyright &copy; 2022 DevBots
+            Copyright &copy; {new Date().getFullYear()} DevBots
           </Typography>
           <Box
             sx={{
@@ -194,17 +202,18 @@ export const Sidebar = (props) => {
            
           </Box>
           
-            <a href='https://blissful-euler-6bc84d.netlify.app' target="_blank">
+            <a href='https://blissful-euler-6bc84d.netlify.app' target="_blank" style={{ textDecoration: 'none' }}>
               <Button
               color="secondary"
               // component="a"
-              endIcon={(<OpenInNewIcon />)}
+              // endIcon={(<OpenInNewIcon />)}
               fullWidth
               sx={{ mt: 2 }}
               variant="contained"
             >
               Visit Our Website
             </Button></a>
+            
          
         </Box>
       </Box>

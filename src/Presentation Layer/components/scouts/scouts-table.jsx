@@ -28,17 +28,11 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 
 import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { NavigateBefore } from '@material-ui/icons';
-import DetailsModal from '../modal';
-
-
 
 const AddNewButton = () => {
-
- 
-  
   
   return (
-    
+ 
  
     <Link to='/addEvent' style={{ textDecoration: 'none' }}>
     <Button
@@ -50,21 +44,16 @@ const AddNewButton = () => {
     Add New Event
   </Button>
     
-    </Link>
-
     
-    
-   )
+    </Link>)
 }
 
-const LatestOrders = function (props) {
-  const [open, setOpen] = React.useState(false);
+const ScoutsTable = function (props) {
   let navigate = useNavigate()
 
   useEffect(() => {
-
+    
     props.getevents();
-  
     console.log('Woooo', props.events.events);
     
   }, []);
@@ -72,45 +61,31 @@ const LatestOrders = function (props) {
   // const {loading, events, error} = useSelector(state => state.events || {})
 
   function loadedShow(){
-    if (props.events.error === 'Network Error') {
-      return <div style={{textAlign: 'center'}}>
+  if (props.events.error) {
+    return <div style={{textAlign: 'center'}}>
+    
+    <Typography
+      color="textSecondary"
+      gutterBottom
+      variant="overline"
+    >
+      {props.events.error}
+    </Typography>
       
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="overline"
-      >
-        Ooops... Something went wrong.
-      </Typography>
-        
-    </div>
-        
-      }
-    else if (props.events.error) {
-      return <div style={{textAlign: 'center'}}>
+  </div>
       
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="overline"
-      >
-        {props.events.error}
-      </Typography>
-        
-    </div>
-        
-      }
-    else if (props.events.eventsLoading) {
-      return <div style={{textAlign: 'center'}}>
-      
-        <CircularProgress color="inherit" size={25} />
-
-    </div>
-      // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
     }
+  else if (props.events.eventsLoading) {
+    return <div style={{textAlign: 'center'}}>
+    
+      <CircularProgress color="inherit" size={25} />
+
+  </div>
+    // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
+  }
   else if (props.events.events) {
     return (
-      <>
+
       <Table>
       <TableHead>
         <TableRow>
@@ -166,9 +141,7 @@ const LatestOrders = function (props) {
 
         {/* ============================= */}
          <TableCell>
-          {/* <Button onClick={() => navigate(`/editEvent/${event.id}`)}> */}
-          <Button  onClick={() => setOpen(true)}>
-         
+          <Button onClick={() => navigate(`/editEvent/${event.id}`)}>
             <DeleteRounded color='secondary'/>
           </Button>
           <Button>
@@ -193,8 +166,6 @@ const LatestOrders = function (props) {
   </TableBody>
   </Table>
 
-  {open && <DetailsModal />}
-  </>
   )
   }
   // else if (props.events.error) {
@@ -244,11 +215,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getevents: () => dispatch(getEvents()),
-
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LatestOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoutsTable);
 
 
 

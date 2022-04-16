@@ -1,22 +1,35 @@
 import axios from "axios";
 
-const http = () => {
+const url = process.env.REACT_APP_API_URL;
+const token = sessionStorage.getItem("user");
 
-    const url = process.env.REACT_APP_API_URL;
-
-    const instance = axios.create({
-        baseURL: url,
-        // baseURL: 'http://localhost:8000/',
-        responseType: 'json',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-
-    return instance;
-}
+const http = axios.create({
+    baseURL: url,
+    // baseURL: 'http://localhost:8000/',
+    responseType: 'json',
+    headers: {
+        "Content-Type": "application/json",
+        // "Content-Type": " text/plain",
+       
+        // "Authorization": `Bearer ${localStorage.getItem('access')}` 
+    }
+});
 
 export default http;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // instance.interceptors.request.use(
 //     function (config) {

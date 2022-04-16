@@ -1,19 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Navbar from './navbar';
-import { Sidebar } from './sidebar';
+import Navbar from '../../components/navbar';
+import { Sidebar } from '../../components/sidebar';
 
 import { Box, Container, Grid } from '@mui/material';
-import { Budget } from '../components/dashboard/budget';
-import { LatestOrders } from '../components/dashboard/latest-orders';
-import { LatestProducts } from '../components/dashboard/latest-products';
-// import { Sales } from '../components/dashboard/sales';
-import { TasksProgress } from '../components/dashboard/tasks-progress';
-import { TotalCustomers } from '../components/dashboard/total-customers';
-import { TotalProfit } from '../components/dashboard/total-profit';
-// import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
-// import { DashboardLayout } from '../components/dashboard-layout';
+import { Budget } from '../../components/event/budget';
+import LatestOrders from '../../components/event/latest-orders';
+// import LatestProducts from '../../components/event/latest-products';
+// import { Sales } from '../../components/event/sales';
+import { TasksProgress } from '../../components/event/tasks-progress';
+import { TotalCustomers } from '../../components/event/total-customers';
+import { TotalProfit } from '../../components/event/total-profit';
+// import { TrafficByDevice } from '../../components/event/traffic-by-device';
+// import { DashboardLayout } from '../../components/event-layout';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
+
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -25,9 +29,14 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   }
 }));
 
-export const DashboardLayout = (props) => {
-  const { children } = props;
+export const Event= () => {
+  // const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  
+
+  
+
 
   return (
     <>
@@ -41,11 +50,11 @@ export const DashboardLayout = (props) => {
           }}
         >
             <>
-    <header>
+    {/* <header>
       <title>
         Dashboard | Material Kit
       </title>
-    </header>
+    </header> */}
     <Box
       component="main"
       sx={{
@@ -112,7 +121,7 @@ export const DashboardLayout = (props) => {
           >
             {/* <TrafficByDevice sx={{ height: '100%' }} /> */}
           </Grid>
-          <Grid
+          {/* <Grid
             item
             lg={4}
             md={6}
@@ -120,10 +129,10 @@ export const DashboardLayout = (props) => {
             xs={12}
           >
             <LatestProducts sx={{ height: '100%' }} />
-          </Grid>
+          </Grid> */}
           <Grid
             item
-            lg={8}
+            lg={12}
             md={12}
             xl={9}
             xs={12}
@@ -144,3 +153,6 @@ export const DashboardLayout = (props) => {
     </>
   );
 };
+
+
+export default Event;
