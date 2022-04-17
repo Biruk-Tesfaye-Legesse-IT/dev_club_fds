@@ -26,89 +26,69 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
 
-import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
-import { NavigateBefore } from '@material-ui/icons';
-import DetailsModal from '../modal';
+import { getScouts } from "../../../Business Layer/thunks/scout/scouts.thunk";
+
+import DetailsModal from './modal';
 
 
 
 const AddNewButton = () => {
-
- 
-  
   
   return (
-    
  
-    <Link to='/addEvent' style={{ textDecoration: 'none' }}>
+ 
+    <Link to='/addScout' style={{ textDecoration: 'none' }}>
     <Button
     startIcon={<AddIcon />}
     color="primary"
     fullWidth
     variant="contained"
   >
-    Add New Event
+    Hire New Scout 
   </Button>
     
-    </Link>
-
     
-    
-   )
+    </Link>)
 }
 
-const LatestOrders = function (props) {
-  const [open, setOpen] = React.useState(false);
+const ScoutsTable = function (props) {
   let navigate = useNavigate()
 
-  useEffect(() => {
+  const [openModal, setOpenModal] = React.useState(false);
 
-    props.getevents();
-  
-    console.log('Woooo', props.events.events);
+  useEffect(() => {
+    console.log('Woooo', props.scouts.scouts);
+    props.getscouts();
+   
     
   }, []);
 
-  // const {loading, events, error} = useSelector(state => state.events || {})
+  // const {loading, scouts, error} = useSelector(state => state.scouts || {})
 
   function loadedShow(){
-    if (props.events.error === 'Network Error') {
-      return <div style={{textAlign: 'center'}}>
+  if (props.scouts.error) {
+    return <div style={{textAlign: 'center'}}>
+    
+    <Typography
+      color="textSecondary"
+      gutterBottom
+      variant="overline"
+    >
+      {props.scouts.error}
+    </Typography>
       
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="overline"
-      >
-        Ooops... Something went wrong.
-      </Typography>
-        
-    </div>
-        
-      }
-    else if (props.events.error) {
-      return <div style={{textAlign: 'center'}}>
+  </div>
       
-      <Typography
-        color="textSecondary"
-        gutterBottom
-        variant="overline"
-      >
-        {props.events.error}
-      </Typography>
-        
-    </div>
-        
-      }
-    else if (props.events.eventsLoading) {
-      return <div style={{textAlign: 'center'}}>
-      
-        <CircularProgress color="inherit" size={25} />
-
-    </div>
-      // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
     }
-  else if (props.events.events) {
+  else if (props.scouts.scoutsLoading) {
+    return <div style={{textAlign: 'center'}}>
+    
+      <CircularProgress color="inherit" size={25} />
+
+  </div>
+    // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
+  }
+  else if (props.scouts.scouts) {
     return (
       <>
       <Table>
@@ -142,42 +122,41 @@ const LatestOrders = function (props) {
     
    
     <TableBody>
-    {props.events && Array.from(props.events.events).map((event) => (
+    {props.scouts && Array.from(props.scouts.scouts).map((scout) => (
       <TableRow
         onClick={() => {
-          console.log(event.name);
+          console.log(scout.name);
         }}
         hover
-        {...console.log('LatestOrders.jsx: event', event)}
-        key={event.name}
+        {...console.log('LatestOrders.jsx: scout', scout)}
+        key={scout.name}
       >
         <TableCell>
-          {event.name}
+          {/* {`${scout.first_name} ${scout.last_name}`} */}
+          
         </TableCell>
         {/* ========================= */}
 
         <TableCell>
-          {event.place}
+          {scout.place}
         </TableCell>
 
         <TableCell>
-          {event.age_limit}
+          {scout.age_limit}
         </TableCell>
 
         {/* ============================= */}
          <TableCell>
-          {/* <Button onClick={() => navigate(`/editEvent/${event.id}`)}> */}
-          <Button  onClick={() => setOpen(true)}>
-         
+          <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
             <DeleteRounded color='secondary'/>
           </Button>
-          <Button>
+          <Button  onClick={() => setOpenModal(true)}>
             <DeleteRounded color='secondary'/>
           </Button>
         </TableCell> 
 
         {/* <TableCell>
-          {format(event.deadline, 'dd/MM/yyyy')}
+          {format(scout.deadline, 'dd/MM/yyyy')}
         </TableCell> */}
         {/* <TableCell>
           <SeverityPill
@@ -192,13 +171,12 @@ const LatestOrders = function (props) {
     ))}
   </TableBody>
   </Table>
-
-  {open && <DetailsModal />}
+    {openModal && <DetailsModal openModal={openModal} setOpenModal={setOpenModal} id={3}/>}
   </>
   )
   }
-  // else if (props.events.error) {
-  //   return <React.Fragment>{props.events.error}</React.Fragment>
+  // else if (props.scouts.error) {
+  //   return <React.Fragment>{props.scouts.error}</React.Fragment>
   // }
  
   }    
@@ -208,7 +186,7 @@ const LatestOrders = function (props) {
       return(
         // <Card {...props}>
         <Card>
-          <CardHeader title="Events" action={<AddNewButton/>}/>
+          <CardHeader title="Scouts" action={<AddNewButton/>}/>
           <PerfectScrollbar>
             <Box sx={{ minWidth: 800 }}>
             {loadedShow()}
@@ -237,18 +215,17 @@ const LatestOrders = function (props) {
    
 const mapStateToProps = state => {
   return {
-    events: state.events
+    scouts: state.scouts
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getevents: () => dispatch(getEvents()),
-
+    getscouts: () => dispatch(getScouts()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LatestOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(ScoutsTable);
 
 
 

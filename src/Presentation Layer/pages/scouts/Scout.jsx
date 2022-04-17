@@ -6,7 +6,7 @@ import { Sidebar } from '../../components/sidebar';
 
 import { Box, Container, Grid } from '@mui/material';
 import { Budget } from '../../components/event/budget';
-import LatestOrders from '../../components/event/latest-orders';
+import ScoutsTable from '../../components/scout/scouts-table';
 // import LatestProducts from '../../components/event/latest-products';
 // import { Sales } from '../../components/event/sales';
 import { TasksProgress } from '../../components/event/tasks-progress';
@@ -29,7 +29,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 export const Scout= () => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   
 
@@ -72,7 +72,7 @@ export const Scout= () => {
             xl={3}
             xs={12}
           >
-            <Budget />
+            {/* <Budget /> */}
           </Grid>
           <Grid
             item
@@ -81,7 +81,7 @@ export const Scout= () => {
             sm={6}
             xs={12}
           >
-            <TotalCustomers />
+            {/* <TotalCustomers /> */}
           </Grid>
           <Grid
             item
@@ -90,7 +90,7 @@ export const Scout= () => {
             sm={6}
             xs={12}
           >
-            <TasksProgress />
+            {/* <TasksProgress /> */}
           </Grid>
           <Grid
             item
@@ -99,7 +99,7 @@ export const Scout= () => {
             sm={6}
             xs={12}
           >
-            <TotalProfit sx={{ height: '100%' }} />
+            {/* <TotalProfit sx={{ height: '100%' }} /> */}
           </Grid>
           <Grid
             item
@@ -135,7 +135,7 @@ export const Scout= () => {
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <ScoutsTable />
           </Grid>
         </Grid>
       </Container>

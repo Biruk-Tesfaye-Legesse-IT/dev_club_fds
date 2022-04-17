@@ -1,28 +1,32 @@
 import http from "../../helpers/client/api.client";
 
-const SCOUT_ENDPOINT = "/api/event/"
+const SCOUT_ENDPOINT = "/api/scouts/"
 
 class ScoutDataService {
-    getAllScouts = () => http().get('/api/scouts/');
+    getAllScouts = () => http.get(`${SCOUT_ENDPOINT}`);
 
-    getEvent(id) {
-        return http().get(`${EVENT_ENDPOINT}${id}`);
+    getScout(id) {
+        return http.get(`${SCOUT_ENDPOINT}${id}/`);
     }
-    createEvent(data) {
-        return http.post(`${EVENT_ENDPOINT}`, data);
+
+    addEvent(data) {
+        return http.post(`${SCOUT_ENDPOINT}`, data);
     }
+
     updateEvent(id, data) {
-        return http.put(`${EVENT_ENDPOINT}${id}`, data);
+        return http.put(`${SCOUT_ENDPOINT}${id}`, data);
     }
+
     deleteEvent(id) {
-        return http.delete(`${EVENT_ENDPOINT}${id}`);
+        return http.delete(`${SCOUT_ENDPOINT}${id}`);
     }
+
     deleteAllEvents() {
-        return http.delete(`${EVENT_ENDPOINT}`);
+        return http.delete(`${SCOUT_ENDPOINT}`);
     }
+    
     findEventByTitle(title) {
-        return http.get(`${EVENT_ENDPOINT}?title=${title}`);
+        return http.get(`${SCOUT_ENDPOINT}?title=${title}`);
     }
 }
 export default new ScoutDataService();
-s

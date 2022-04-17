@@ -1,9 +1,9 @@
 import http from "../../helpers/client/api.client";
 
-const EVENT_ENDPOINT = "/api/event/"
+const EVENT_ENDPOINT = "/api/events/"
 
 class EventDataService {
-    getAllEvents = () => http.get('/api/clubs/1/');
+    getAllEvents = () => http.get(`${EVENT_ENDPOINT}`);
 
     getEvent(id) {
         return http.get(`${EVENT_ENDPOINT}${id}`);
@@ -12,7 +12,7 @@ class EventDataService {
         return http.post(`${EVENT_ENDPOINT}`, data);
     }
     updateEvent(id, data) {
-        return http.put(`${EVENT_ENDPOINT}${id}`, data);
+        return http.put(`${EVENT_ENDPOINT}${id}/`, data);
     }
     deleteEvent(id) {
         return http.delete(`${EVENT_ENDPOINT}${id}`);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import {
   Box,
   Button,
@@ -7,14 +7,22 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
+  Alert
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Stack from '@mui/material/Stack';
+
+import { useParams } from 'react-router-dom';
+
+import { getEvent, updateEvent } from "../../../Business Layer/thunks/event/events.thunk";
+import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+
 
 const states = [
   {
@@ -33,19 +41,41 @@ const states = [
 
 
 
-export const AddScout = (props) => {
+const EditEventComponent = function (props) {
+
+    let { id } = useParams();
+
+ 
+    useEffect(() => {
+  
+      // props.getevent(props.match.params.id);
+      
+      props.getevent(id);
+      
+    }, []);
+
+    
   
   const [values, setValues] = useState({
-    firstName: 'Daniel',
-    lastName: 'Mola',
-    email: 'abebemola@gmail.com',
-    // phone: '+251-912-345-678',
-    phone: '0924913413',
-    state: 'Addis Ababa',
-    country: 'Ethiopia',
-    date: new Date(),
-    
+    description: '',
+    starting_date: new Date(),
   });
+
+  console.log('ValuesBefore', values);
+
+  useEffect(() => {
+        
+    if (props.events.event) {
+      setValues(props.events.event);
+    }
+   
+  }, []);
+
+    console.log('Premium', props.events.event.description);
+    console.log('Values', values);
+
+   
+
 
 
   const handleChange = (event) => {
@@ -56,15 +86,16 @@ export const AddScout = (props) => {
     console.log(values);
   };
 
-  const handleDateChange = (newDate) => {
+
+  const handleStartingDateChange = (newDate) => {
     setValues({
       ...values,
-      date: newDate,
+      starting_date: newDate,
     });
-    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
-    // console.log(values.date.getDate);
-    console.log(values.date);
+    console.log('Demo Date: ', values.demoDate);
+    console.log(values);
   };
+
 
 
   return (
@@ -74,6 +105,7 @@ export const AddScout = (props) => {
       {...props}
     >
       <Card>
+        {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
         {/* <CardHeader
           subheader="The information can be edited"
           title="Profile"
@@ -93,10 +125,10 @@ export const AddScout = (props) => {
                 fullWidth
                 helperText="Please specify the first name"
                 label="First name"
-                name="firstName"
+                name="description"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.description}
                 variant="outlined"
               />
             </Grid>
@@ -143,6 +175,7 @@ export const AddScout = (props) => {
                 onChange={handleChange}
                 type="tel"
                 value={values.phone}
+                placeholder="+251-912-345-678"
                 variant="outlined"
                 
               />
@@ -198,25 +231,21 @@ export const AddScout = (props) => {
             >
 
             <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+            <DatePicker
+            label="Starting Date"
+            name='starting_date'
+            value={values.starting_date}
+            minDate={new Date('2017-01-01')}
+            onChange={handleStartingDateChange}
+            renderInput={(params) => <TextField {...params} />}
+            />
                 
-                <DateTimePicker
-                  renderInput={(params) => <TextField 
-                  
-                    {...params} />}
-                  label="Date"
-                  name='date'
-                  value={values.date}
-                  onChange={handleDateChange}
-                  minDate={new Date('2020-02-14')}
-                  minTime={new Date(0, 0, 0, 8)}
-                  maxTime={new Date(0, 0, 0, 18, 45)}
-                />
-              
-            </LocalizationProvider>
                 
-            </Grid>
-           
             
+            </LocalizationProvider>
+                            
+            </Grid>
 
             <Grid
               item
@@ -248,11 +277,32 @@ export const AddScout = (props) => {
           <Button
             color="primary"
             variant="contained"
+            onClick={() => {
+                props.updateevent(id, values);
+            } }
           >
-            Create Event
+            Update Event
           </Button>
         </Box>
       </Card>
     </form>
   );
 };
+
+
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getevent: (id) => dispatch(getEvent(id)),
+    updateevent: (id, data) => dispatch(updateEvent(id, data))
+    // getevents: () => dispatch(getEvent()),
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditEventComponent);

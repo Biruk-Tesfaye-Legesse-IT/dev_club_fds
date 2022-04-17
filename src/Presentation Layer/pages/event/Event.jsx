@@ -6,7 +6,7 @@ import { Sidebar } from '../../components/sidebar';
 
 import { Box, Container, Grid } from '@mui/material';
 import { Budget } from '../../components/event/budget';
-import LatestOrders from '../../components/event/latest-orders';
+import EventsTable from '../../components/event/events.table';
 // import LatestProducts from '../../components/event/latest-products';
 // import { Sales } from '../../components/event/sales';
 import { TasksProgress } from '../../components/event/tasks-progress';
@@ -31,7 +31,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 export const Event= () => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   
 
@@ -137,7 +137,7 @@ export const Event= () => {
             xl={9}
             xs={12}
           >
-            <LatestOrders />
+            <EventsTable />
           </Grid>
         </Grid>
       </Container>

@@ -4,6 +4,7 @@ const initialState = {
     events: [],
     event: {},
     eventsLoading: true,
+    eventLoading: true,
     error: null,
 
 }
@@ -29,6 +30,28 @@ export default function eventsReducer(state = initialState, action) {
             return {
                 ...state,
                 eventsLoading: false,
+                error: action.payload,
+            };
+
+    // ==========================================================
+
+        case eventActionTypes.EVENT_LOADING:
+            return {
+                ...state,
+                eventLoading: true,
+                error: null
+            }
+        case eventActionTypes.EVENT_LOADED:
+            return {
+                ...state,
+                event: action.payload,
+                eventLoading: false,
+            };
+
+        case eventActionTypes.EVENT_LOADING_ERROR:
+            return {
+                ...state,
+                eventLoading: false,
                 error: action.payload,
             };
     

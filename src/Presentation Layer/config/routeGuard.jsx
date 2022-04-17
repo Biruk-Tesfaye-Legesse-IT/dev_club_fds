@@ -15,6 +15,7 @@ const PrivateRoute = (props) => {
     const auth = props.auth.isAuthenticated; // determine if authorized, from context or however you're doing it
     console.log('Status:', auth)
     return auth ? <Outlet /> : <Navigate to="/login" />;
+    // return <Outlet/>   // to turn off the guard
 }
 
 const mapStateToProps = state => {

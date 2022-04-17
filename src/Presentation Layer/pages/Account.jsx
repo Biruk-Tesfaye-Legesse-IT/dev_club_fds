@@ -5,7 +5,7 @@ import { AccountProfileDetails } from '../components/account/account-profile-det
 import { styled } from '@mui/system';
 import Navbar from '../components/navbar';
 import { Sidebar } from '../components/sidebar';
-import BasicModal from '../components/modal';
+
 // const Account = () => (
 
 // );
@@ -30,8 +30,8 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 }));
 
 export const Account= (props) => {
-  // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const { children } = props;
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   
   

@@ -14,11 +14,11 @@ export const getEvents = () => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventsLoadingError(error.message)));
 };
 
-export const getEvent = () => (dispatch) => {
+export const getEvent = (id) => (dispatch) => {
 
     dispatch(eventActions.eventLoading());
 
-    EventDataService.getEvent()
+    EventDataService.getEvent(id)
         .then((response) => {
             console.log('response', response.data);
             dispatch(eventActions.eventLoaded(response.data))

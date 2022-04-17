@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import { CreateEvent } from '../../components/event/create-event';
+import EditEventComponent from '../../components/event/edit-event';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -60,7 +60,7 @@ export const EditEvent= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <CreateEvent />
+                    <EditEventComponent />
                 </Grid>
                 </Grid>
             </Container>
