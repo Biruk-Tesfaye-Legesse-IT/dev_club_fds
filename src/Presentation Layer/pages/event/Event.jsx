@@ -32,12 +32,6 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 export const Event= () => {
   // const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-  
-
-  
-
-
   return (
     <>
       <DashboardLayoutRoot>
@@ -74,7 +68,7 @@ export const Event= () => {
             xl={3}
             xs={12}
           >
-            <Budget />
+            {/* <Budget /> */}
           </Grid>
           <Grid
             item
@@ -83,7 +77,7 @@ export const Event= () => {
             sm={6}
             xs={12}
           >
-            <TotalCustomers />
+            {/* <TotalCustomers /> */}
           </Grid>
           <Grid
             item
@@ -92,7 +86,7 @@ export const Event= () => {
             sm={6}
             xs={12}
           >
-            <TasksProgress />
+            {/* <TasksProgress /> */}
           </Grid>
           <Grid
             item
@@ -101,7 +95,7 @@ export const Event= () => {
             sm={6}
             xs={12}
           >
-            <TotalProfit sx={{ height: '100%' }} />
+            {/* <TotalProfit sx={{ height: '100%' }} /> */}
           </Grid>
           <Grid
             item

@@ -15,67 +15,153 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
 
-import { getEvent, updateEvent } from "../../../Business Layer/thunks/event/events.thunk";
+import { getEvent, updateEvent, getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 
 
-const states = [
+const education_level_options = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'highschool',
+    label: 'High School'
   },
   {
-    value: 'new-york',
-    label: 'New York'
+    value: 'degree',
+    label: 'Degree'
   },
   {
-    value: 'san-francisco',
-    label: 'San Francisco'
+    value: 'middleschool',
+    label: 'Middle School'
+  },
+  {
+    value: 'vocational',
+    label: 'Vocational'
   }
 ];
 
+const location_options = [
+  {
+    value: 'aa',
+    label: 'Addis Ababa'
+  },
+  {
+    value: 'dd',
+    label: 'Dire Dawa'
+  },
+  {
+    value: 'bd',
+    label: 'Bahir Dar'
+  }
+];
+
+const required_position_options = [
+  {
+    value: 'any',
+    label: 'Any'
+  },
+  {
+    value: 'GK',
+    label: 'GK'
+  },
+  {
+    value: 'DMF',
+    label: 'DMF'
+  }
+];
+
+const gender_options = [
+  {
+    value: 'Male',
+    label: 'Male'
+  },
+  {
+    value: 'Female',
+    label: 'Female'
+  },
+];
 
 
 const EditEventComponent = function (props) {
 
-    let { id } = useParams();
+  
+  let { id } = useParams();
 
  
-    useEffect(() => {
-  
-      // props.getevent(props.match.params.id);
-      
-      props.getevent(id);
-      
-    }, []);
+  useEffect(() => {
+    props.getevent(id); 
+  }, []);
 
-    
-  
+  const navigate = useNavigate();
+
+  // ========================================
+
   const [values, setValues] = useState({
     description: '',
     starting_date: new Date(),
-  });
+    application_deadline: new Date(),
+    ending_date: new Date(),
+    location: '',
+    education_level: '',
+    required_position: '',
+    demo_date: new Date(),
+    age_limit: 21,
+    gender: '',
+    session_time_for_each: 20,
+   
+  }
+  );
 
-  console.log('ValuesBefore', values);
+  // ============================================
 
   useEffect(() => {
-        
     if (props.events.event) {
       setValues(props.events.event);
     }
-   
-  }, []);
+  }, [props.events.event]);
 
-    console.log('Premium', props.events.event.description);
+  // ==============================================
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log('Values', values);
+    props.updateevent(id, values);
+    props.getevent(id);
+    props.getevents();
+    navigate('/');
+  };
 
-   
+  const handleStartDateChange = (newDate) => {
+    
+    setValues({
+      ...values,
+      startDate: newDate,
+    });
+    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
+    // console.log(values.date.getDate);
+    console.log('Start Date: ', values.startDate);
+  };
 
+  const handleEndDateChange = (newDate) => {
+    setValues({
+      ...values,
+      endDate: newDate,
+    });
+    console.log('End Date: ', values.endDate);
+  };
+
+  const handleDemoDateChange = (newDate) => {
+    setValues({
+      ...values,
+      demoDate: newDate,
+    });
+    console.log('Demo Date: ', values.demoDate);
+    console.log(values);
+  };
 
 
   const handleChange = (event) => {
@@ -86,208 +172,272 @@ const EditEventComponent = function (props) {
     console.log(values);
   };
 
-
-  const handleStartingDateChange = (newDate) => {
+  const handleDateChange = (newDate) => {
     setValues({
       ...values,
-      starting_date: newDate,
+      date: newDate,
     });
-    console.log('Demo Date: ', values.demoDate);
-    console.log(values);
+    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
+    // console.log(values.date.getDate);
+    console.log(values.date);
+  };
+
+  // =========================================================
+ 
+  function loadedShow(){
+    if (props.events.eventLoading) {
+      return <div>Loading...</div>
+    }
+    else if (props.events.event) {
+      return (
+
+        <form
+          autoComplete="off"
+          noValidate
+          {...props}
+          >
+          <Card>
+            {/* <CardHeader
+              subheader="The information can be edited"
+              title="Profile"
+            /> */}
+            <Divider />
+            <CardContent>
+              <Grid
+                container
+                spacing={3}
+              >
+                <Grid
+                  item
+                  md={12}
+                  xs={12}
+                >
+                  <TextField
+                    fullWidth
+                    helperText="Please give brief description of the event"
+                    label="Event Description"
+                    name="description"
+                    onChange={handleChange}
+                    required
+                    value={values.description}
+                    defaultValue={props.events.event.description}
+                    variant="outlined"
+                  />
+                </Grid>
+              
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    fullWidth
+                    label="Email Address"
+                    name="email"
+                    onChange={handleChange}
+                    required
+                    value={values.email}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    fullWidth
+                    label="Required Position"
+                    name="required_positions"
+                    onChange={handleChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.required_positions}
+                    variant="outlined"
+                  >
+                    {required_position_options.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+
+                <TextField
+                    fullWidth
+                    label="Location"
+                    name="location"
+                    onChange={handleChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.location}
+                    variant="outlined"
+                  >
+                    {location_options.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    fullWidth
+                    label="Education Level"
+                    name="education_level"
+                    onChange={handleChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.education_level}
+                    variant="outlined"
+                  >
+                    {education_level_options.map((option) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+
+
+              
+
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    
+                    <DateTimePicker
+                      renderInput={(params) => <TextField 
+                      
+                        {...params} />}
+                      label="Start Date"
+                      name='startDate'
+                      value={values.startDate}
+                      onChange={handleStartDateChange}
+                      // minDate={new Date('2020-02-14')}
+                      // minTime={new Date(0, 0, 0, 8)}
+                      // maxTime={new Date(0, 0, 0, 18, 45)}
+                    />
+                  
+                </LocalizationProvider>
+
+                </Grid>
+
+
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    
+                    <DateTimePicker
+                      renderInput={(params) => <TextField 
+                      
+                        {...params} />}
+                      label="End Date"
+                      name='endDate'
+                      value={values.endDate}
+                      onChange={handleEndDateChange}
+                      // minDate={new Date('2020-02-14')}
+                      // minTime={new Date(0, 0, 0, 8)}
+                      // maxTime={new Date(0, 0, 0, 18, 45)}
+                    />
+                  
+                </LocalizationProvider>
+
+                </Grid>
+
+                
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                <DatePicker
+                  label="Demo Date"
+                  name='demoDate'
+                  value={values.demoDate}
+                  minDate={new Date('2017-01-01')}
+                  onChange={handleDemoDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                    
+                    
+                  
+                </LocalizationProvider>
+
+                </Grid>
+              
+
+              </Grid>
+            </CardContent>
+            <Divider />
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                p: 2
+              }}
+            >
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleSubmit}
+              >
+                Update Event
+              </Button>
+            </Box>
+          </Card>
+      </form>
+
+      )
+  }
+
+
+}
+
+  // ======================================================
+
+   
+  
+    return (
+      <>{loadedShow()}</>
+    );
   };
 
 
-
-  return (
-    <form
-      autoComplete="off"
-      noValidate
-      {...props}
-    >
-      <Card>
-        {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
-        {/* <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        /> */}
-        <Divider />
-        <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="description"
-                onChange={handleChange}
-                required
-                value={values.description}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Last name"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="tel"
-                value={values.phone}
-                placeholder="+251-912-345-678"
-                variant="outlined"
-                
-              />
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-            <DatePicker
-            label="Starting Date"
-            name='starting_date'
-            value={values.starting_date}
-            minDate={new Date('2017-01-01')}
-            onChange={handleStartingDateChange}
-            renderInput={(params) => <TextField {...params} />}
-            />
-                
-                
-            
-            </LocalizationProvider>
-                            
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Beech"
-                name="beech"
-                onChange={handleChange}
-                required
-                value={values.beech}
-                variant="outlined"
-              />
-            </Grid>
-           
-
-          </Grid>
-        </CardContent>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            p: 2
-          }}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-                props.updateevent(id, values);
-            } }
-          >
-            Update Event
-          </Button>
-        </Box>
-      </Card>
-    </form>
-  );
-};
 
 
 const mapStateToProps = state => {
@@ -299,8 +449,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getevent: (id) => dispatch(getEvent(id)),
-    updateevent: (id, data) => dispatch(updateEvent(id, data))
-    // getevents: () => dispatch(getEvent()),
+    updateevent: (id,values) => dispatch(updateEvent(id,values)),
+   
+    getevents: () => dispatch(getEvents()),
 
   };
 }

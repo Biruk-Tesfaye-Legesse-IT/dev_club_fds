@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import { CreateEvent } from '../../components/event/create-event';
+import EditScoutComponent from '../../components/scout/edit-scout';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -47,7 +47,7 @@ export const EditScout= (props) => {
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Create New Event
+                Edit Scout
                 </Typography>
                 <Grid
                 container
@@ -60,7 +60,7 @@ export const EditScout= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <CreateEvent />
+                    <EditScoutComponent />
                 </Grid>
                 </Grid>
             </Container>

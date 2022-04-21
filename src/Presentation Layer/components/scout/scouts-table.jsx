@@ -25,8 +25,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { Link, useNavigate } from 'react-router-dom';
 
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
-import { getScouts } from "../../../Business Layer/thunks/scout/scouts.thunk";
+import { getScouts, getScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
 
 import DetailsModal from './modal';
 
@@ -95,26 +97,24 @@ const ScoutsTable = function (props) {
       <TableHead>
         <TableRow>
           <TableCell>
-            Order Ref
+            ID
           </TableCell>
           <TableCell>
-            Customer
-          </TableCell>
-          <TableCell sortDirection="desc">
-            <Tooltip
-              enterDelay={300}
-              title="Sort"
-            >
-              <TableSortLabel
-                active
-                direction="desc"
-              >
-                Date
-              </TableSortLabel>
-            </Tooltip>
+            Full Name
           </TableCell>
           <TableCell>
-            Status
+            Gender
+          </TableCell>
+          <TableCell>
+           
+            Phone Number
+             
+          </TableCell>
+          <TableCell>
+            Assigned
+          </TableCell>
+          <TableCell>
+            
           </TableCell>
         </TableRow>
       </TableHead>
@@ -128,45 +128,54 @@ const ScoutsTable = function (props) {
           console.log(scout.name);
         }}
         hover
-        {...console.log('LatestOrders.jsx: scout', scout)}
-        key={scout.name}
+        {...console.log('ScouTable.jsx: scout', scout)}
+        key={scout.id}
       >
         <TableCell>
-          {/* {`${scout.first_name} ${scout.last_name}`} */}
-          
+          {scout.id}
         </TableCell>
         {/* ========================= */}
 
         <TableCell>
-          {scout.place}
+          {`${scout.first_name} ${scout.last_name}`}
+          
         </TableCell>
 
         <TableCell>
-          {scout.age_limit}
+          {scout.more.gender ? 'M' : 'F'}
+        </TableCell>
+
+        <TableCell>
+          {scout.phone_number}
+        </TableCell>
+
+        <TableCell>
+          <SeverityPill
+            color={(scout.more.is_assigned === true && 'success')
+            || (scout.more.is_assigned === false && 'error')
+            || 'warning'}
+          >
+            {scout.more.is_assigned ? 'Yes' : 'No'}
+          </SeverityPill>
         </TableCell>
 
         {/* ============================= */}
          <TableCell>
           <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
-            <DeleteRounded color='secondary'/>
+            <EditRoundedIcon color='secondary'/>
           </Button>
-          <Button  onClick={() => setOpenModal(true)}>
-            <DeleteRounded color='secondary'/>
+          <Button  onClick={() => {
+            props.getscout(scout.id);
+            setOpenModal(true);
+            }}>
+            <InfoRoundedIcon color='secondary'/>
           </Button>
         </TableCell> 
 
         {/* <TableCell>
           {format(scout.deadline, 'dd/MM/yyyy')}
         </TableCell> */}
-        {/* <TableCell>
-          <SeverityPill
-            color={(order.status === 'delivered' && 'success')
-            || (order.status === 'refunded' && 'error')
-            || 'warning'}
-          >
-            {order.status}
-          </SeverityPill>
-        </TableCell> */}
+
       </TableRow>
     ))}
   </TableBody>
@@ -222,6 +231,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getscouts: () => dispatch(getScouts()),
+    getscout: (id) => dispatch(getScout(id)),
   };
 }
 

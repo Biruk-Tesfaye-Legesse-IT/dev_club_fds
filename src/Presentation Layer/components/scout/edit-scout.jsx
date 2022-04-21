@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import {
   Box,
   Button,
@@ -7,71 +7,95 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
+  Alert
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
 import DateTimePicker from '@mui/lab/DateTimePicker';
-// import DatePicker from '@mui/lab/DatePicker';
 import Stack from '@mui/material/Stack';
+
+import { useParams } from 'react-router-dom';
+
+import { getScout, updateScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
+import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+
 
 const states = [
   {
-    value: 'aa',
-    label: 'Addis Ababa'
+    value: 'alabama',
+    label: 'Alabama'
   },
   {
-    value: 'dd',
-    label: 'Dire Dawa'
+    value: 'new-york',
+    label: 'New York'
   },
   {
-    value: 'bd',
-    label: 'Bahir Dar'
+    value: 'san-francisco',
+    label: 'San Francisco'
   }
 ];
 
-export const AccountProfileDetails = (props) => {
-  const [values, setValues] = useState({
-    clubName: 'St. Gorge F.C.',
-    lastName: 'Mola',
-    email: 'stgeorgefc@gmail.com',
-    phone: '+251-116-604-030',
-    // phone: '0924913413',
-    region: 'Addis Ababa',
-    country: 'Ethiopia',
-    // startDate: new Date(),
-    // endDate: new Date(),
-    // demoDate: new Date(),
+
+
+const EditScoutComponent = function (props) {
+
+    let { id } = useParams();
+
+ 
+    useEffect(() => {
+  
+      // props.getscout(props.match.params.id);
+      
+      props.getscout(id);
+      
+    }, []);
+
     
+  
+  const [values, setValues] = useState({
+    description: '',
+    starting_date: new Date(),
   });
 
+  console.log('ValuesBefore', values);
 
-  
+  useEffect(() => {
+        
+    if (props.scouts.scout) {
+      setValues(props.scouts.scout);
+    }
+   
+  }, [props.scouts.scout]);
 
-  const handleChange = (event) => {
-    event.preventDefault();
+    console.log('Premium', props.scouts.scout.description);
+    console.log('Values', values);
+
+   
 
 
+
+  const handleChange = (e) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.value, 
+      [e.target.name]: e.target.value, 
     });
     console.log(values);
   };
 
 
+  const handleStartingDateChange = (newDate) => {
+    setValues({
+      ...values,
+      starting_date: newDate,
+    });
+    console.log('Demo Date: ', values.demoDate);
+    console.log(values);
+  };
 
-
-  // const handleDateChange = (newEndDate, newStartDate) => {
-  //   setValues({
-  //     ...values,
-  //     startDate: newStartDate,
-  //     endDate: newEndDate
-  //   });
-  //   console.log(values.startDate);
-  // };
 
 
   return (
@@ -81,10 +105,11 @@ export const AccountProfileDetails = (props) => {
       {...props}
     >
       <Card>
-        <CardHeader
-          subheader="Some of this information cannot  be edited. Please contact admin if you need to change it."
-          title="Club Profile"
-        />
+        {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
+        {/* <CardHeader
+          subheader="The information can be edited"
+          title="Profile"
+        /> */}
         <Divider />
         <CardContent>
           <Grid
@@ -93,22 +118,21 @@ export const AccountProfileDetails = (props) => {
           >
             <Grid
               item
-              md={12}
+              md={6}
               xs={12}
             >
               <TextField
                 fullWidth
-                // helperText="Please specify the first name"
-                label="Club Name"
-                name="clubName"
+                helperText="Please specify the first name"
+                label="First name"
+                name="description"
                 onChange={handleChange}
-                // required
-                disabled
-                value={values.clubName}
+                required
+                value={values.description}
                 variant="outlined"
               />
             </Grid>
-            {/* <Grid
+            <Grid
               item
               md={6}
               xs={12}
@@ -122,7 +146,7 @@ export const AccountProfileDetails = (props) => {
                 value={values.lastName}
                 variant="outlined"
               />
-            </Grid> */}
+            </Grid>
             <Grid
               item
               md={6}
@@ -144,15 +168,16 @@ export const AccountProfileDetails = (props) => {
               xs={12}
             >
               <TextField
+
                 fullWidth
                 label="Phone Number"
                 name="phone"
                 onChange={handleChange}
-                // type="number"
+                type="tel"
                 value={values.phone}
+                placeholder="+251-912-345-678"
                 variant="outlined"
-                error={values.phone.length > 10}
-                helperText={values.phone.length > 10 ? 'Invalid!' : ' '}
+                
               />
             </Grid>
 
@@ -179,8 +204,8 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Select Region"
-                name="region"
+                label="Select State"
+                name="state"
                 onChange={handleChange}
                 required
                 select
@@ -199,7 +224,44 @@ export const AccountProfileDetails = (props) => {
               </TextField>
             </Grid>
 
-           
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+            <DatePicker
+            label="Starting Date"
+            name='starting_date'
+            value={values.starting_date}
+            minDate={new Date('2017-01-01')}
+            onChange={handleStartingDateChange}
+            renderInput={(params) => <TextField {...params} />}
+            />
+                
+                
+            
+            </LocalizationProvider>
+                            
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Beech"
+                name="beech"
+                onChange={handleChange}
+                required
+                value={values.beech}
+                variant="outlined"
+              />
+            </Grid>
            
 
           </Grid>
@@ -215,11 +277,32 @@ export const AccountProfileDetails = (props) => {
           <Button
             color="primary"
             variant="contained"
+            onClick={() => {
+                props.updatescout(id, values);
+            } }
           >
-            Save details
+            Update Scout
           </Button>
         </Box>
       </Card>
     </form>
   );
 };
+
+
+const mapStateToProps = state => {
+  return {
+    scouts: state.scouts
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getscout: (id) => dispatch(getScout(id)),
+    updatescout: (id, data) => dispatch(updateScout(id, data))
+    // getscouts: () => dispatch(getScouts()),
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditScoutComponent);

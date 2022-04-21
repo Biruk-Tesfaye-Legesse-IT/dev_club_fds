@@ -16,11 +16,11 @@ import http from '../../../Data Layer/helpers/client/api.client';
 
 const user = {
   avatar: 'https://upload.wikimedia.org/wikipedia/en/8/80/St_George_SC_%28logo%29.png',
-  city: 'Addis Ababa',
+  city: 'Addis Ababa,',
   country: 'Ethiopia',
   type: 'Club',
   name: 'St. George SC',
-  timezone: 'GMT+3'
+  timezone: ''
 };
 
 const AUTH_ENDPOINT = "/api/"
@@ -112,12 +112,12 @@ export function AccountProfile(props) {
         <Modal isOpen={isModalOpen} setIsOpen={setModalOpen} /> */}
 
         <Button
-          onClick={() => { console.log('Change Picture'); } }
+          onClick={() => { console.log('Change Profile Picture'); } }
           color="primary"
           fullWidth
           variant="text"
         >
-          Change Profile
+          Change Profile Picture
         </Button>
       </CardActions>
     </Card>

@@ -38,3 +38,15 @@ export const updateEvent = (id, data) => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventUpdateError(error.message)));    
 };
 
+export const createEvent = (data) => (dispatch) => {
+
+    dispatch(eventActions.eventCreating());
+
+    EventDataService.createEvent(data)
+        .then((response) => {
+            console.log('response', response.data);
+            dispatch(eventActions.eventCreated(response.data))
+        })
+        .catch((error) => dispatch(eventActions.eventCreateError(error.message)));    
+};
+

@@ -25,6 +25,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { Link, useNavigate } from 'react-router-dom';
 
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
 import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { NavigateBefore } from '@material-ui/icons';
@@ -57,6 +59,8 @@ const AddNewButton = () => {
    )
 }
 
+
+
 const EventsTable = function (props) {
   const [open, setOpen] = React.useState(false);
   let navigate = useNavigate()
@@ -68,6 +72,16 @@ const EventsTable = function (props) {
     console.log('Woooo', props.events.events);
     
   }, []);
+
+  // const {loading, events, error} = useSelector(state => state.events || {})
+
+  useEffect(() => {
+
+    console.log('Component Will Change');
+    
+    
+  }, [props.events.event]);
+  
 
   // const {loading, events, error} = useSelector(state => state.events || {})
 
@@ -115,10 +129,13 @@ const EventsTable = function (props) {
       <TableHead>
         <TableRow>
           <TableCell>
-            Order Ref
+            ID
           </TableCell>
           <TableCell>
-            Customer
+            Starting Date
+          </TableCell>
+          <TableCell>
+            Application Deadline
           </TableCell>
           <TableCell sortDirection="desc">
             <Tooltip
@@ -129,12 +146,15 @@ const EventsTable = function (props) {
                 active
                 direction="desc"
               >
-                Date
+                Age Limit
               </TableSortLabel>
             </Tooltip>
           </TableCell>
           <TableCell>
-            Status
+            Required Position
+          </TableCell>
+          <TableCell>
+            
           </TableCell>
         </TableRow>
       </TableHead>
@@ -148,20 +168,36 @@ const EventsTable = function (props) {
           console.log(event.name);
         }}
         hover
-        {...console.log('LatestOrders.jsx: event', event)}
-        key={event.name}
+        {...console.log('EvenTable.jsx: event', event)}
+        key={event.id}
       >
         <TableCell>
-          {event.name}
+          {event.id}
         </TableCell>
         {/* ========================= */}
 
         <TableCell>
-          {event.place}
+          {event.starting_date}
         </TableCell>
 
         <TableCell>
-          {event.age_limit}
+          {event.starting_date}
+        </TableCell>
+
+        <TableCell>
+          {event.description}
+        </TableCell>
+
+        {/* ================================== */}
+
+        <TableCell>
+          <SeverityPill
+            color={(event.required_positions === 'delivered' && 'success')
+            || (event.required_positions === 'refunded' && 'error')
+            || 'warning'}
+          >
+            {event.required_positions}
+          </SeverityPill>
         </TableCell>
 
         {/* ============================= */}
@@ -169,25 +205,17 @@ const EventsTable = function (props) {
           <Button onClick={() => navigate(`/editEvent/${event.id}`)}>
         
          
-            <DeleteRounded color='secondary'/>
+            <EditRoundedIcon color='secondary'/>
           </Button>
           <Button>
-            <DeleteRounded color='secondary'/>
+            <InfoRoundedIcon color='secondary'/>
           </Button>
         </TableCell> 
 
         {/* <TableCell>
           {format(event.deadline, 'dd/MM/yyyy')}
         </TableCell> */}
-        {/* <TableCell>
-          <SeverityPill
-            color={(order.status === 'delivered' && 'success')
-            || (order.status === 'refunded' && 'error')
-            || 'warning'}
-          >
-            {order.status}
-          </SeverityPill>
-        </TableCell> */}
+        
       </TableRow>
     ))}
   </TableBody>

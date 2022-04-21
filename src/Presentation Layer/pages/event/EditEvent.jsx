@@ -47,7 +47,7 @@ export const EditEvent= (props) => {
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Create New Event
+                Edit Event
                 </Typography>
                 <Grid
                 container
