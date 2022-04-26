@@ -9,23 +9,23 @@ class ScoutDataService {
         return http.get(`${SCOUT_ENDPOINT}${id}/`);
     }
 
-    addEvent(data) {
+    createScout(data) {
         return http.post(`${SCOUT_ENDPOINT}`, data);
     }
 
-    updateEvent(id, data) {
+    updateScout(id, data) {
         return http.put(`${SCOUT_ENDPOINT}${id}`, data);
     }
 
-    deleteEvent(id) {
+    deleteScout(id) {
         return http.delete(`${SCOUT_ENDPOINT}${id}`);
     }
 
-    deleteAllEvents() {
+    deleteAllScouts() {
         return http.delete(`${SCOUT_ENDPOINT}`);
     }
     
-    findEventByTitle(title) {
+    findScoutByTitle(title) {
         return http.get(`${SCOUT_ENDPOINT}?title=${title}`);
     }
 }

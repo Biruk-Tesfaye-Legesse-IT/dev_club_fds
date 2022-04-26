@@ -15,6 +15,8 @@ import DatePicker from '@mui/lab/DatePicker';
 
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Stack from '@mui/material/Stack';
+import { format } from 'date-fns'
+
 
 import { createEvent } from "../../../Business Layer/thunks/event/events.thunk";
 import { connect } from 'react-redux';
@@ -73,33 +75,36 @@ const required_position_options = [
 
 
 const CreateEvent = function (props) {
+
+
   
   const [values, setValues] = useState({
-    starting_date: "2022-04-14",
-    application_deadline: "2022-04-14",
+    starting_date: format(new Date(), 'yyyy-MM-dd'),
+    application_deadline: format(new Date(), 'yyyy-MM-dd'),
     description: "This is a test event",
-    required_positions: "any",
-    age_limit: 21,
-    education_level: "dskjf",
-    location: "kjdf",
-    session_time_for_each: 20,
+    required_positions: 'any',
+    age_limit: 21, 
+    education_level: 'highschool',
+    location: 'aa',  //optioned
+    session_time_for_each: 20, //
+    gender: 'M',
   });
 
-  const handleStartDateChange = (newDate) => {
+  const handleStartingDateChange = (newDate) => {
     
     setValues({
       ...values,
-      startDate: newDate,
+      starting_date: newDate,
     });
     // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
     // console.log(values.date.getDate);
     console.log('Start Date: ', values.startDate);
   };
 
-  const handleEndDateChange = (newDate) => {
+  const handleDeadlineDateChange = (newDate) => {
     setValues({
       ...values,
-      endDate: newDate,
+      application_deadline: newDate,
     });
     console.log('End Date: ', values.endDate);
   };
@@ -130,6 +135,13 @@ const CreateEvent = function (props) {
     // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
     // console.log(values.date.getDate);
     console.log(values.date);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // console.log('Debug', values);
+    console.log('Date', );
+    props.createevent(values);
   };
 
 
@@ -172,13 +184,16 @@ const CreateEvent = function (props) {
               md={6}
               xs={12}
             >
+            
               <TextField
                 fullWidth
-                label="Email Address"
-                name="email"
+                error={values.age_limit < 18}
+                label="Age Limit"
+                name="age_limit"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={values.age_limit}
+                validationError="Please enter a valid age limit"
                 variant="outlined"
               />
             </Grid>
@@ -242,6 +257,62 @@ const CreateEvent = function (props) {
               md={6}
               xs={12}
             >
+
+            <TextField
+                fullWidth
+                label="Gender"
+                name="gender"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.location}
+                variant="outlined"
+              >
+                {location_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+
+            <TextField
+                fullWidth
+                label="Scouts"
+                name="scouts"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.location}
+                variant="outlined"
+              >
+                {location_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
               <TextField
                 fullWidth
                 label="Education Level"
@@ -264,9 +335,6 @@ const CreateEvent = function (props) {
               </TextField>
             </Grid>
 
-
-           
-
             <Grid
               item
               md={6}
@@ -275,18 +343,14 @@ const CreateEvent = function (props) {
               
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 
-                <DateTimePicker
-                  renderInput={(params) => <TextField 
-                  
-                    {...params} />}
-                  label="Start Date"
-                  name='startDate'
-                  value={values.startDate}
-                  onChange={handleStartDateChange}
-                  // minDate={new Date('2020-02-14')}
-                  // minTime={new Date(0, 0, 0, 8)}
-                  // maxTime={new Date(0, 0, 0, 18, 45)}
-                />
+              <DatePicker
+                label="Starting Date"
+                name='starting_date'
+                value={values.starting_date}
+                minDate={new Date()}
+                onChange={handleStartingDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
               
             </LocalizationProvider>
 
@@ -300,50 +364,22 @@ const CreateEvent = function (props) {
             >
 
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                
-                <DateTimePicker
-                  renderInput={(params) => <TextField 
-                  
-                    {...params} />}
-                  label="End Date"
-                  name='endDate'
-                  value={values.endDate}
-                  onChange={handleEndDateChange}
-                  // minDate={new Date('2020-02-14')}
-                  // minTime={new Date(0, 0, 0, 8)}
-                  // maxTime={new Date(0, 0, 0, 18, 45)}
-                />
-              
-            </LocalizationProvider>
-
-            </Grid>
-
             
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-            <DatePicker
-              label="Demo Date"
-              name='demoDate'
-              value={values.demoDate}
-              minDate={new Date('2017-01-01')}
-              onChange={handleDemoDateChange}
-              renderInput={(params) => <TextField {...params} />}
-            />
-                
-                
+              <DatePicker
+                label="Application Deadline Date"
+                name='application_deadline'
+                value={values.application_deadline}
+                minDate={new Date()}
+                onChange={handleDeadlineDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
               
             </LocalizationProvider>
 
             </Grid>
-           
-
-          </Grid>
+                  
+        </Grid>
+        
         </CardContent>
         <Divider />
         <Box
@@ -356,6 +392,7 @@ const CreateEvent = function (props) {
           <Button
             color="primary"
             variant="contained"
+            onClick={handleSubmit}
           >
             Create Event
           </Button>
@@ -373,8 +410,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createevent: () => dispatch(createEvent()),
-
+    createevent: (data) => dispatch(createEvent(data)),
   };
 }
 

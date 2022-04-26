@@ -7,46 +7,82 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  TextField,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import { connect } from 'react-redux';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import DateTimePicker from '@mui/lab/DateTimePicker';
+
+
+
+import { format } from 'date-fns'
 import Stack from '@mui/material/Stack';
+import { createScout } from '../../../Business Layer/thunks/scout/scouts.thunk';
 
-const states = [
+const gender_options = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'MALE',
+    label: 'Male'
   },
   {
-    value: 'new-york',
-    label: 'New York'
+    value: 'FEMALE',
+    label: 'Female'
   },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
 ];
 
 
 
-export const AddScout = (props) => {
+const AddScout = (props) => {
+
+
   
   const [values, setValues] = useState({
-    firstName: 'Daniel',
-    lastName: 'Mola',
-    email: 'abebemola@gmail.com',
-    // phone: '+251-912-345-678',
-    phone: '0924913413',
-    state: 'Addis Ababa',
-    country: 'Ethiopia',
-    date: new Date(),
-    
+    username: 'asawhite',
+    password: '1234',
+    first_name: 'asd',
+    last_name: 'asd',
+    phone_number: 'dsa',
+    address: 'sad',
+    // type: "SCOUT",
+    email: 'biruk@gmail.com', // This is a must
+    more: {
+      dob: format(new Date(), 'yyyy-MM-dd'),
+      gender: 'MALE',
+      is_assigned: false
+    }
   });
 
+
+
+  const handleBirthDateChange = (newDate) => {
+    setValues({
+      ...values,
+      more: {
+        ...values.more,
+        dob: format(newDate, 'yyyy-MM-dd'),
+      }
+    });
+  };
+
+  const handleMoreChange = (gender) => {
+    setValues({
+      ...values,
+      more: {
+        ...values.more,
+        gender: gender.target.value,
+      }
+    });
+    console.log('In more', values);
+  };
 
   const handleChange = (event) => {
     setValues({
@@ -56,16 +92,13 @@ export const AddScout = (props) => {
     console.log(values);
   };
 
-  const handleDateChange = (newDate) => {
-    setValues({
-      ...values,
-      date: newDate,
-    });
-    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
-    // console.log(values.date.getDate);
-    console.log(values.date);
-  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Submit: ', values);
+    props.createscout(values);
+    // props.history.push('/scouts');
+  };
 
   return (
     <form
@@ -84,6 +117,7 @@ export const AddScout = (props) => {
             container
             spacing={3}
           >
+
             <Grid
               item
               md={6}
@@ -91,15 +125,75 @@ export const AddScout = (props) => {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
+               
+                label="User name"
+                name="username"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.username}
                 variant="outlined"
               />
             </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+              
+                label="Password"
+                name="password"
+                type="password"
+                onChange={handleChange}
+                required
+                value={values.password}
+                variant="outlined"
+              />
+
+              {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  name='password'
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                    />
+              </FormControl> */}
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                // helperText="Please specify the first name"
+                label="First name"
+                name="first_name"
+                onChange={handleChange}
+                required
+                value={values.first_name}
+                variant="outlined"
+              />
+            </Grid>
+
             <Grid
               item
               md={6}
@@ -108,10 +202,10 @@ export const AddScout = (props) => {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
+                name="last_name"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -139,10 +233,10 @@ export const AddScout = (props) => {
 
                 fullWidth
                 label="Phone Number"
-                name="phone"
+                name="phone_number"
                 onChange={handleChange}
                 type="tel"
-                value={values.phone}
+                value={values.phone_number}
                 variant="outlined"
                 
               />
@@ -155,11 +249,11 @@ export const AddScout = (props) => {
             >
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
+                label="Address"
+                name="address"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.address}
                 variant="outlined"
               />
             </Grid>
@@ -171,16 +265,16 @@ export const AddScout = (props) => {
             >
               <TextField
                 fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
+                label="Gender"
+                name="gender"
+                onChange={handleMoreChange}
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.more.gender}
                 variant="outlined"
               >
-                {states.map((option) => (
+                {gender_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -191,30 +285,6 @@ export const AddScout = (props) => {
               </TextField>
             </Grid>
 
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                
-                <DateTimePicker
-                  renderInput={(params) => <TextField 
-                  
-                    {...params} />}
-                  label="Date"
-                  name='date'
-                  value={values.date}
-                  onChange={handleDateChange}
-                  minDate={new Date('2020-02-14')}
-                  minTime={new Date(0, 0, 0, 8)}
-                  maxTime={new Date(0, 0, 0, 18, 45)}
-                />
-              
-            </LocalizationProvider>
-                
-            </Grid>
            
             
 
@@ -223,15 +293,20 @@ export const AddScout = (props) => {
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Beech"
-                name="beech"
-                onChange={handleChange}
-                required
-                value={values.beech}
-                variant="outlined"
+              
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                
+              <DatePicker
+                label="Birth Date"
+                name='dob'
+                value={values.more.dob}
+                minDate={new Date()}
+                onChange={handleBirthDateChange}
+                renderInput={(params) => <TextField {...params} />}
               />
+              
+            </LocalizationProvider>
+
             </Grid>
            
 
@@ -248,6 +323,7 @@ export const AddScout = (props) => {
           <Button
             color="primary"
             variant="contained"
+            onClick= {handleSubmit}
           >
             Hire Scout
           </Button>
@@ -256,3 +332,17 @@ export const AddScout = (props) => {
     </form>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    scouts: state.scouts
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    createscout: (scout) => dispatch(createScout(scout))  
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddScout);

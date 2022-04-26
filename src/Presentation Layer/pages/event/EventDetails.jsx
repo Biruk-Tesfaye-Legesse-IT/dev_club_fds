@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import AddScout from '../../components/scout/add-scout';
+import EventDetailComponent from '../../components/event/event-details';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -15,7 +15,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   }
 }));
 
-export const HireNewScout= (props) => {
+export const EventDetails= (props) => {
   // const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   
@@ -47,7 +47,7 @@ export const HireNewScout= (props) => {
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Hire New Scout
+                Event Details
                 </Typography>
                 <Grid
                 container
@@ -60,7 +60,7 @@ export const HireNewScout= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <AddScout />
+                    <EventDetailComponent />
                 </Grid>
                 </Grid>
             </Container>
@@ -79,4 +79,4 @@ export const HireNewScout= (props) => {
 };
 
 
-export default HireNewScout;
+export default EventDetails;

@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import AddScout from '../../components/scout/add-scout';
+import ScoutDetailComponent from '../../components/scout/scout-details';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -15,9 +15,12 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   }
 }));
 
-export const HireNewScout= (props) => {
+const ScoutDetails= (props) => {
   // const { children } = props;
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+
+
   
   return (
     <>
@@ -47,7 +50,7 @@ export const HireNewScout= (props) => {
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Hire New Scout
+                Scout Details
                 </Typography>
                 <Grid
                 container
@@ -60,7 +63,7 @@ export const HireNewScout= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <AddScout />
+                    <ScoutDetailComponent />
                 </Grid>
                 </Grid>
             </Container>
@@ -79,4 +82,4 @@ export const HireNewScout= (props) => {
 };
 
 
-export default HireNewScout;
+export default ScoutDetails;

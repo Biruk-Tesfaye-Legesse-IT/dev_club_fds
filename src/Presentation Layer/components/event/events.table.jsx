@@ -26,13 +26,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+
 
 import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { NavigateBefore } from '@material-ui/icons';
 import DetailsModal from '../scout/modal';
 
-
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const AddNewButton = () => {
 
@@ -164,27 +164,50 @@ const EventsTable = function (props) {
     <TableBody>
     {props.events && Array.from(props.events.events).map((event) => (
       <TableRow
-        onClick={() => {
-          console.log(event.name);
-        }}
+     
         hover
         {...console.log('EvenTable.jsx: event', event)}
         key={event.id}
       >
-        <TableCell>
+        <TableCell
+
+          onClick={() => {
+            navigate(`/eventDetails/${event.id}`)
+          }}
+        
+        >
           {event.id}
         </TableCell>
         {/* ========================= */}
 
-        <TableCell>
+        <TableCell
+
+          onClick={() => {
+            navigate(`/eventDetails/${event.id}`)
+          }}
+
+          >
           {event.starting_date}
         </TableCell>
 
-        <TableCell>
+        <TableCell
+
+          onClick={() => {
+            navigate(`/eventDetails/${event.id}`)
+          }}
+
+          >
           {event.starting_date}
         </TableCell>
 
-        <TableCell>
+        <TableCell
+
+          onClick={() => {
+            navigate(`/eventDetails/${event.id}`)
+          }}
+
+          >
+            
           {event.description}
         </TableCell>
 
@@ -208,7 +231,7 @@ const EventsTable = function (props) {
             <EditRoundedIcon color='secondary'/>
           </Button>
           <Button>
-            <InfoRoundedIcon color='secondary'/>
+            <DeleteRounded color='secondary'/>
           </Button>
         </TableCell> 
 

@@ -67,7 +67,7 @@ const ScoutsTable = function (props) {
 
   // const {loading, scouts, error} = useSelector(state => state.scouts || {})
 
-  let searchTerm = "";
+  let searchTerm = "Kev";
   // let filteredScouts = props.scouts.scouts.filter(scout => scout.firstName.toLowerCase().includes(searchTerm.toLowerCase()));
   let scoutsName = props.scouts.scouts.first_name;
   
@@ -95,118 +95,62 @@ const ScoutsTable = function (props) {
     // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
   }
   else if (props.scouts.scouts) {
-    return (
-      <>
-      <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>
-            ID
-          </TableCell>
-          <TableCell>
-            Full Name
-          </TableCell>
-          <TableCell>
-            Gender
-          </TableCell>
-          <TableCell>
-           
-            Phone Number
-             
-          </TableCell>
-          <TableCell>
-            Assigned
-          </TableCell>
-          <TableCell>
-            
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      
     
-   
-    <TableBody>
-    {props.scouts && Array.from(props.scouts.scouts).filter((val) => {
+    return (
+      
+      <>
+          {props.scouts && Array.from(props.scouts.scouts).filter((val) => {
 
-      if (searchTerm == ""){
-        return val
-      } else if (val.first_name.toLowerCase().includes(searchTerm.toLowerCase())){ 
-        return val
-      }
+            if (searchTerm == ""){
+              return val
+            } else if (val.first_name.toLowerCase().includes(searchTerm.toLowerCase())){ 
+              return val
+            }
 
-    }).map((scout) => (
-      <TableRow
-        onClick={() => {
-          console.log(scout.name);
-        }}
-        hover
-        {...console.log('ScouTable.jsx: scout', scout)}
-        key={scout.id}
-      >
-        <TableCell
-          onClick={() => navigate(`/scoutDetails/${scout.id}`)}
-        >
-          {scout.id}
-        </TableCell>
-        {/* ========================= */}
-
-        <TableCell
-          onClick={() => navigate(`/scoutDetails/${scout.id}`)}
-        >
-          {`${scout.first_name} ${scout.last_name}`}
-          
-        </TableCell>
-
-        <TableCell
-          onClick={() => navigate(`/scoutDetails/${scout.id}`)}
-        >
-          {scout.more.gender ? 'M' : 'F'}
-        </TableCell>
-
-        <TableCell
-          onClick={() => navigate(`/scoutDetails/${scout.id}`)}
-        >
-          {scout.phone_number}
-        </TableCell>
-
-        <TableCell
-          onClick={() => navigate(`/scoutDetails/${scout.id}`)}
-        >
-          <SeverityPill
-            color={(scout.more.is_assigned === true && 'success')
-            || (scout.more.is_assigned === false && 'error')
-            || 'warning'}
-          >
-            {scout.more.is_assigned ? 'Yes' : 'No'}
-          </SeverityPill>
-        </TableCell>
-
-        {/* ============================= */}
-         <TableCell>
-          <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
-            <EditRoundedIcon color='secondary'/>
-          </Button>
-          {/* <Button  onClick={() => {
-            props.getscout(scout.id);
-            setOpenModal(true);
-            }}
-            data-toggle="modal"
-            > */}
-            <Button onClick={() => {}}>
-              <DeleteRounded color='secondary'/>
-          </Button>
-        </TableCell> 
-
-        {/* <TableCell>
-          {format(scout.deadline, 'dd/MM/yyyy')}
-        </TableCell> */}
-
-      </TableRow>
-    ))}
-  </TableBody>
-  </Table>
-    {openModal && <DetailsModal openModal={openModal} setOpenModal={setOpenModal} id={3}/>}
-  </>
+          }).map((scout) => (
+            <div className="clearfix">
+            <div className="row">
+             
+                <div className="col-md-4 animated fadeIn" key={data.id.value}>
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="avatar">
+                        <img
+                          src={scout.propfile_picture}
+                          className="card-img-top"
+                          alt=""
+                        />
+                      </div>
+                      <h5 className="card-title">
+                        {this.uppercase(`${scout.first_name} ${scout.last_name}`) +
+                          " " +
+                          this.uppercase(scout.name.last)}
+                      </h5>
+                      <p className="card-text">
+                        {scout.location +
+                          ", " +
+                          this.uppercase(scout.location)}
+                        <br />
+                        <span className="phone">{scout.phone_number}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+             
+            </div>
+            <button
+              className="btn btn-light btn-block w-50 mx-auto"
+              onClick={e => {
+                this.loadMore();
+              }}
+            >
+              Load More Users
+            </button>
+          </div>
+          ))}
+      
+          {openModal && <DetailsModal openModal={openModal} setOpenModal={setOpenModal} id={3}/>}
+      </>
   )
   }
   // else if (props.scouts.error) {

@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import DialogTitle from '@mui/material/DialogTitle';
+// import CloseIcon from '@mui/icons/CloseIcon';
 import { makeStyles, propsToClassKey } from '@mui/styles';
 import { connect} from 'react-redux';
 import store from '../../../Business Layer/store/store';
@@ -18,7 +20,7 @@ import {
   ListItemText,
   List,
   Avatar,
-  useTheme
+  useTheme,
 } from '@mui/material';
 
 import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone';
@@ -43,14 +45,22 @@ const useStyles = makeStyles({
 
 // const DetailsModal = function({ openModal, setOpenModal, id}, props) {
 const DetailsModal = function(props) {
+
+  const { children, onClose, ...other } = props;
   
   useEffect(() => {
     props.setOpenModal(true);
     // props.getscout(props.id);
-    console.log('Woooo', props.scout.scout);
-    console.log('Ahhhhoy:',props.scout.scoutLoading);
+   
 
   }, [props.setOpenModal]);
+
+ 
+
+  useEffect(() => {
+    console.log('Woooo', props.scout.scout);
+    console.log('Ahhhhoy:',props.scout.scoutLoading);
+  }, [props.scout.scout]);
 
   const classes = useStyles();
   
@@ -59,7 +69,7 @@ const DetailsModal = function(props) {
  
 
   function loadedShow(){
-    if (props.scout.scout) {
+    if (props.scout.scoutLoading) {
      
       return (
         <div>
@@ -70,7 +80,7 @@ const DetailsModal = function(props) {
       );
     }
 
-    else if (props.scout.scoutLoading) {
+    else if (props.scout.scout) {
       return(
         <div>
         <Typography variant="h6" gutterBottom>
@@ -84,21 +94,37 @@ const DetailsModal = function(props) {
 
   return (
     
-      <Modal
+      // <Modal
         
-        open={props.openModal}
-        // {...console.log(props.openModal)}
-        // {...console.log('Ahooy',props.scout.scoutLoaded)}
-        onClose={props.setOpenModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      //   open={props.openModal}
+      //   // {...console.log(props.openModal)}
+      //   // {...console.log('Ahooy',props.scout.scoutLoaded)}
+      //   onClose={props.setOpenModal(false)}
+      //   aria-labelledby="modal-modal-title"
+      //   aria-describedby="modal-modal-description"
+      // >
 
 
-      {loadedShow()} 
+      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          {/* <CloseIcon /> */}
+        </IconButton>
+      ) : null}
+    </DialogTitle>
       
      
-      </Modal>
+      // </Modal>
   );
 }
 

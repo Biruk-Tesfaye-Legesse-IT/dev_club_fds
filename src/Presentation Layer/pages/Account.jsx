@@ -75,7 +75,7 @@ export const Account= (props) => {
           container
           spacing={3}
         >
-          <Grid
+          {/* <Grid
             item
             lg={4}
             md={6}
@@ -88,9 +88,9 @@ export const Account= (props) => {
             lg={8}
             md={6}
             xs={12}
-          >
+          > */}
             <AccountProfileDetails />
-          </Grid>
+          {/* </Grid> */}
         </Grid>
       </Container>
     </Box>

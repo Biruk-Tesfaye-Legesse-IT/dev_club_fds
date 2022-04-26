@@ -2,7 +2,7 @@ import ScoutDataService from '../../../Data Layer/services/scout/scout.service';
 import scoutActions from '../../actions/scout/scout.actions'
 
 
-export const getScouts = () => (dispatch) => {
+const getScouts = () => (dispatch) => {
 
     dispatch(scoutActions.scoutsLoading());
 
@@ -14,7 +14,7 @@ export const getScouts = () => (dispatch) => {
         .catch((error) => dispatch(scoutActions.scoutsLoadingError(error.message)));
 };
 
-export const getScout = (id) => (dispatch) => {
+const getScout = (id) => (dispatch) => {
 
     dispatch(scoutActions.scoutLoading());
 
@@ -26,7 +26,7 @@ export const getScout = (id) => (dispatch) => {
         .catch((error) => dispatch(scoutActions.scoutLoadingError(error.message)));    
 };
 
-export const updateScout = (id, data) => (dispatch) => {
+const updateScout = (id, data) => (dispatch) => {
 
     dispatch(scoutActions.scoutUpdating());
 
@@ -38,3 +38,25 @@ export const updateScout = (id, data) => (dispatch) => {
         .catch((error) => dispatch(scoutActions.scoutUpdateError(error.message)));    
 };
 
+
+const createScout = (data) => (dispatch) => {
+
+    dispatch(scoutActions.scoutAdding());
+
+    ScoutDataService.createScout(data)
+        .then((response) => {
+            console.log('response', response.data);
+            dispatch(scoutActions.scoutAdded(response.data))
+        })
+        .catch((error) => dispatch(scoutActions.scoutAddError(error.message)));    
+};
+
+
+export{
+
+    getScouts,
+    getScout,
+    updateScout,
+    createScout,
+
+}
