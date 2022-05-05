@@ -18,15 +18,12 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
-
-
-
 import { format } from 'date-fns'
 import Stack from '@mui/material/Stack';
-import { createScout } from '../../../Business Layer/thunks/scout/scouts.thunk';
+import { createScout, getScouts } from '../../../Business Layer/thunks/scout/scouts.thunk';
 
 const gender_options = [
   {
@@ -42,7 +39,7 @@ const gender_options = [
 
 
 const AddScout = (props) => {
-
+  const navigate = useNavigate()
 
   
   const [values, setValues] = useState({
@@ -97,7 +94,8 @@ const AddScout = (props) => {
     event.preventDefault();
     console.log('Submit: ', values);
     props.createscout(values);
-    // props.history.push('/scouts');
+    props.getscouts();
+    navigate('/scouts');
   };
 
   return (
@@ -341,7 +339,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createscout: (scout) => dispatch(createScout(scout))  
+    createscout: (scout) => dispatch(createScout(scout)), 
+    getscouts: () => dispatch(getScouts()) 
   };
 }
 

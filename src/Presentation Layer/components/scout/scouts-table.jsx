@@ -183,9 +183,9 @@ const ScoutsTable = function (props) {
 
         {/* ============================= */}
          <TableCell>
-          <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
+          {/* <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
             <EditRoundedIcon color='secondary'/>
-          </Button>
+          </Button> */}
           {/* <Button  onClick={() => {
             props.getscout(scout.id);
             setOpenModal(true);

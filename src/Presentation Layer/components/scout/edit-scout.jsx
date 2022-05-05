@@ -16,27 +16,24 @@ import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Stack from '@mui/material/Stack';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-import { getScout, updateScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
+import { getScout, getScouts, updateScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
 import { connect } from 'react-redux';
+import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 
 
 
-const states = [
+const gender_options = [
   {
-    value: 'alabama',
-    label: 'Alabama'
+    value: 'MALE',
+    label: 'Male'
   },
   {
-    value: 'new-york',
-    label: 'New York'
+    value: 'FEMALE',
+    label: 'Female'
   },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
 ];
 
 
@@ -45,21 +42,31 @@ const EditScoutComponent = function (props) {
 
     let { id } = useParams();
 
+    let navigate = useNavigate();
+
  
-    useEffect(() => {
-  
-      // props.getscout(props.match.params.id);
-      
-      props.getscout(id);
-      
+    useEffect(() => {    
+      props.getscout(id);     
     }, []);
 
     
   
   const [values, setValues] = useState({
-    description: '',
-    starting_date: new Date(),
+    username: 'asawhite',
+    password: '1234',
+    first_name: 'asd',
+    last_name: 'asd',
+    phone_number: 'dsa',
+    address: 'sad',
+    // type: "SCOUT",
+    email: 'biruk@gmail.com', // This is a must
+    more: {
+      dob: format(new Date(), 'yyyy-MM-dd'),
+      gender: 'MALE',
+      is_assigned: false
+    }
   });
+ 
 
   console.log('ValuesBefore', values);
 
@@ -71,12 +78,6 @@ const EditScoutComponent = function (props) {
    
   }, [props.scouts.scout]);
 
-    console.log('Premium', props.scouts.scout.description);
-    console.log('Values', values);
-
-   
-
-
 
   const handleChange = (e) => {
     setValues({
@@ -86,15 +87,24 @@ const EditScoutComponent = function (props) {
     console.log(values);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Submit: ', values);
+    props.updatescout(values);
+    props.getscouts();
+    navigate('/scouts');
+  };
 
-  const handleStartingDateChange = (newDate) => {
+  const handleBirthDateChange = (newDate) => {
     setValues({
       ...values,
-      starting_date: newDate,
+      more: {
+        ...values.more,
+        dob: format(newDate, 'yyyy-MM-dd'),
+      }
     });
-    console.log('Demo Date: ', values.demoDate);
-    console.log(values);
   };
+
 
 
 
@@ -105,7 +115,6 @@ const EditScoutComponent = function (props) {
       {...props}
     >
       <Card>
-        {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
         {/* <CardHeader
           subheader="The information can be edited"
           title="Profile"
@@ -116,6 +125,7 @@ const EditScoutComponent = function (props) {
             container
             spacing={3}
           >
+
             <Grid
               item
               md={6}
@@ -123,15 +133,77 @@ const EditScoutComponent = function (props) {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="description"
-                onChange={handleChange}
+               
+                label="User name"
+                name="username"
+                disabled
                 required
-                value={values.description}
+                value={values.username}
                 variant="outlined"
               />
             </Grid>
+
+            {/* <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+              
+                label="Password"
+                name="password"
+                type="password"
+                onChange={handleChange}
+                required
+                value={values.password}
+                variant="outlined"
+              /> */}
+
+              {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  name='password'
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                    />
+              </FormControl> */}
+              
+            {/* </Grid> */}
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                // helperText="Please specify the first name"
+                label="First name"
+                name="first_name"
+                disabled
+                onChange={handleChange}
+                required
+                value={values.first_name}
+                variant="outlined"
+              />
+            </Grid>
+
             <Grid
               item
               md={6}
@@ -140,10 +212,10 @@ const EditScoutComponent = function (props) {
               <TextField
                 fullWidth
                 label="Last name"
-                name="lastName"
-                onChange={handleChange}
+                name="last_name"
+                disabled
                 required
-                value={values.lastName}
+                value={values.last_name}
                 variant="outlined"
               />
             </Grid>
@@ -171,11 +243,10 @@ const EditScoutComponent = function (props) {
 
                 fullWidth
                 label="Phone Number"
-                name="phone"
+                name="phone_number"
                 onChange={handleChange}
                 type="tel"
-                value={values.phone}
-                placeholder="+251-912-345-678"
+                value={values.phone_number}
                 variant="outlined"
                 
               />
@@ -188,11 +259,11 @@ const EditScoutComponent = function (props) {
             >
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
+                label="Address"
+                name="address"
+                disabled
                 required
-                value={values.country}
+                value={values.address}
                 variant="outlined"
               />
             </Grid>
@@ -204,16 +275,16 @@ const EditScoutComponent = function (props) {
             >
               <TextField
                 fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
+                label="Gender"
+                name="gender"
+                disabled
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.state}
+                value={values.more.gender}
                 variant="outlined"
               >
-                {states.map((option) => (
+                {gender_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -224,43 +295,29 @@ const EditScoutComponent = function (props) {
               </TextField>
             </Grid>
 
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-            <DatePicker
-            label="Starting Date"
-            name='starting_date'
-            value={values.starting_date}
-            minDate={new Date('2017-01-01')}
-            onChange={handleStartingDateChange}
-            renderInput={(params) => <TextField {...params} />}
-            />
-                
-                
+           
             
-            </LocalizationProvider>
-                            
-            </Grid>
 
             <Grid
               item
               md={6}
               xs={12}
             >
-              <TextField
-                fullWidth
-                label="Beech"
-                name="beech"
-                onChange={handleChange}
-                required
-                value={values.beech}
-                variant="outlined"
+              
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                
+              <DatePicker
+                label="Birth Date"
+                name='dob'
+                value={values.more.dob}
+                minDate={new Date()}
+                disabled
+                onChange={handleBirthDateChange}
+                renderInput={(params) => <TextField {...params} />}
               />
+              
+            </LocalizationProvider>
+
             </Grid>
            
 
@@ -277,11 +334,9 @@ const EditScoutComponent = function (props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => {
-                props.updatescout(id, values);
-            } }
+            onClick= {handleSubmit}
           >
-            Update Scout
+            Hire Scout
           </Button>
         </Box>
       </Card>
@@ -299,8 +354,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getscout: (id) => dispatch(getScout(id)),
-    updatescout: (id, data) => dispatch(updateScout(id, data))
-    // getscouts: () => dispatch(getScouts()),
+    updatescout: (id, data) => dispatch(updateScout(id, data)),
+    getscouts: () => dispatch(getScouts()),
 
   };
 }

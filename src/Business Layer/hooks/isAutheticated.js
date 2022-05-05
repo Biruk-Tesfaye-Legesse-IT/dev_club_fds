@@ -13,7 +13,7 @@ import store from "../pages/Home.jsx";
 
 const isAuthenticatedByToken = () => {
     // if (localStorage.getItem('token')) {
-    if (sessionStorage.getItem('user')) {
+    if (sessionStorage.getItem('access')) {
         return true;
     }
 };

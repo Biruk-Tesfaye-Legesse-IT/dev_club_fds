@@ -51,6 +51,18 @@ const createScout = (data) => (dispatch) => {
         .catch((error) => dispatch(scoutActions.scoutAddError(error.message)));    
 };
 
+const deleteScout = (id) => (dispatch) => {
+
+    dispatch(scoutActions.scoutDeleting());
+
+    ScoutDataService.deleteScout(id)
+        .then((response) => {
+            console.log('response', response.data);
+            dispatch(scoutActions.scoutDeleted(response.data))
+        })
+        .catch((error) => dispatch(scoutActions.scoutDeleteError(error.message)));    
+};
+
 
 export{
 
@@ -58,5 +70,6 @@ export{
     getScout,
     updateScout,
     createScout,
+    deleteScout,
 
 }

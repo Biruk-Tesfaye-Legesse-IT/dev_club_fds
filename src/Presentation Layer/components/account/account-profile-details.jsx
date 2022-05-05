@@ -17,6 +17,7 @@ import {
 import { styled } from '@mui/material/styles';
 import Icon from '@mui/material/Icon';
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone';
+import {ChangePassword} from './change-password';
 
 
 const states = [
@@ -87,135 +88,15 @@ export const AccountProfileDetails = (props) => {
     
     <>
 
-      <Grid
-          item
-          lg={4}
-          md={6}
-          xs={12}
-        >
-          <Card {...props}>
-            <CardContent>
-              <Box
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >  
-                <Badge
-                    overlap="circular"
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    badgeContent={
-                      // <Icon 
-                      // sx={{
-                      //   height: 26,
-                      //   width: 30,
-                      //   mb: 1,
-                      //   mr: -1.5,}}
-                      // baseClassName="fas" className="fa-plus-circle" color='primary'/>
-                      
-                      
-                      
-                <Button>
-                  <CameraAltTwoToneIcon
-                    color="secondary"
-                    // fontSize="large"
-                    sx={{
-                    height: 30,
-                    width: 30,
-                    mb: 1,
-                    mr: -1.5,
-                  
-                  }}/> 
 
-                </Button>
-                  
-              }
-                  >
-                  <Avatar
-                    src={selectedImage.profileImage}
-                    sx={{
-                      height: 64,
-                      mb: 2,
-                      width: 64
-                    }} />
-                </Badge>
-              
+
      
-
-          
-                <Typography
-                  color="textPrimary"
-                  gutterBottom
-                  variant="h5"
-                >
-                  {user.name}
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {`${user.city} ${user.country}`}
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="body2"
-                >
-                  {user.timezone}
-                </Typography>
-              </Box>
-            </CardContent>
-            <Divider />
-            <CardActions>
-
-          
-
-              {/* <Button
-                    onClick={() => {console.log('Change Picture');}}
-                    color="primary"
-                    fullWidth
-                    variant="text"
-                  >
-                    Upload picture
-                  </Button> */}
-
-
-              {/* <Button
-                  onClick={() => setModalOpen(true)}
-                  color="primary"
-                  fullWidth
-                  variant="text"
-                >
-                  Open Details
-                </Button>
-
-              <Modal isOpen={isModalOpen} setIsOpen={setModalOpen} /> */}
-
-              <Button
-                onClick={() => { console.log('Change Profile Picture'); } }
-                color="primary"
-                fullWidth
-                variant="text"
-              >
-                Change Profile Picture
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-
-
-      <Grid
-          item
-          lg={8}
-          md={6}
-          xs={12}
-        >
           <form
             autoComplete="off"
             noValidate
             {...props}
           >
-            <Card>
+            <Card elevation={5}>
               <CardHeader
                 subheader="Some of this information cannot  be edited. Please contact admin if you need to change it."
                 title="Club Profile"
@@ -243,21 +124,7 @@ export const AccountProfileDetails = (props) => {
                       variant="outlined"
                     />
                   </Grid>
-                  {/* <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
-                    <TextField
-                      fullWidth
-                      label="Last name"
-                      name="lastName"
-                      onChange={handleChange}
-                      required
-                      value={values.lastName}
-                      variant="outlined"
-                    />
-                  </Grid> */}
+
                   <Grid
                     item
                     md={6}
@@ -355,8 +222,12 @@ export const AccountProfileDetails = (props) => {
                 </Button>
               </Box>
             </Card>
+           
           </form>
-        </Grid>
+      
+          
+     
+        
       </>
   );
 };

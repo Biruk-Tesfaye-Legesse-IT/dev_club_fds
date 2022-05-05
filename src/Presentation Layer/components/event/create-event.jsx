@@ -58,20 +58,42 @@ const location_options = [
 
 const required_position_options = [
   {
-    value: 'any',
+    value: 'Any',
     label: 'Any'
   },
   {
-    value: 'GK',
+    value: 'Gk',
     label: 'GK'
   },
   {
-    value: 'DMF',
-    label: 'DMF'
-  }
+    value: 'Def',
+    label: 'DEF'
+  },
+  {
+    value: 'Mid',
+    label: 'MID'
+  },
+  // {
+  //   value: 'Att',
+  //   label: 'ATT'
+  // },
+  {
+    value: 'Str',
+    label: 'STR'
+  },
+
 ];
 
-
+const gender_options = [
+  {
+    value: 'Male',
+    label: 'Male'
+  },
+  {
+    value: 'Female',
+    label: 'Female'
+  },
+];
 
 
 const CreateEvent = function (props) {
@@ -82,19 +104,20 @@ const CreateEvent = function (props) {
     starting_date: format(new Date(), 'yyyy-MM-dd'),
     application_deadline: format(new Date(), 'yyyy-MM-dd'),
     description: "This is a test event",
-    required_positions: 'any',
+    required_positions: 'goalkeepers',
     age_limit: 21, 
     education_level: 'highschool',
     location: 'aa',  //optioned
+    gender: 'MALE',
     session_time_for_each: 20, //
-    gender: 'M',
+    club: 6,
   });
 
   const handleStartingDateChange = (newDate) => {
     
     setValues({
       ...values,
-      starting_date: newDate,
+      starting_date: format(newDate, 'yyyy-MM-dd'),
     });
     // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
     // console.log(values.date.getDate);
@@ -104,7 +127,7 @@ const CreateEvent = function (props) {
   const handleDeadlineDateChange = (newDate) => {
     setValues({
       ...values,
-      application_deadline: newDate,
+      application_deadline: format(newDate, 'yyyy-MM-dd'),
     });
     console.log('End Date: ', values.endDate);
   };

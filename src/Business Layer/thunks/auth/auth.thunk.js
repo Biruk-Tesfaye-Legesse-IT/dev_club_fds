@@ -15,7 +15,8 @@ export const login = (username, password) => (dispatch) => {
                 
                 // localStorage.setItem("user", JSON.stringify(response.data));
 
-                sessionStorage.setItem("user", JSON.stringify(response.data));
+                AuthDataService.setAccessToken(response.data.access);
+                AuthDataService.setRefreshToken(response.data.refresh);
             }
             dispatch(authActions.loggedIn(response.data));
             return response.data;
@@ -23,6 +24,8 @@ export const login = (username, password) => (dispatch) => {
 
     .catch((error) => dispatch(authActions.logInError(error.message)));
 };
+
+
 
 export const logout = () => (dispatch) => {
 
@@ -37,7 +40,27 @@ export const logout = () => (dispatch) => {
     }
 };
 
-export const refreshToken = (accessToken) => (dispatch) => {
+export const refreshToken = (refreshToken) => (dispatch) => {
 
-    dispatch(authActions.refreshToken(accessToken));
+    dispatch(authActions.refreshingToken());
+    try{
+        AuthDataService.refreshToken(refreshToken)
+        .then((response) => {
+            if (response.data.access) {
+                // console.log('Adding token to local storage');
+                // sessionStorage.setItem("user", JSON.stringify(response.data.access));
+                
+                // localStorage.setItem("user", JSON.stringify(response.data));
+
+                // sessionStorage.setItem("user"., JSON.stringify(response.data));
+                sessionStorage.setItem("access", JSON.stringify(response.data.access));
+            }
+            dispatch(authActions.tokenRefereshed(response.data));
+            return response.data;
+        })
+
+    } catch (error) {
+        console.log('Error refreshing token: ', error);
+        dispatch(authActions.refreshTokenError(error.message));
+    }
 };

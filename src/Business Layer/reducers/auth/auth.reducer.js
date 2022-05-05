@@ -3,7 +3,7 @@ import authActionTypes from '../../actions/auth/auth.action.types';
 
 // const user = JSON.parse(localStorage.getItem("user"));
 
-const user = JSON.parse(sessionStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("access"));
 
 const initialState = {
 
@@ -17,6 +17,9 @@ const initialState = {
     ? true
     : false,
 
+    tokenRefreshing: false,
+    tokenRefreshed: false,
+    tokenRefreshError: null,
 }
 
 export default function authReducer(state = initialState, action) {
@@ -44,12 +47,37 @@ export default function authReducer(state = initialState, action) {
                 error: action.payload,
                 isAuthenticated: false,
             };
-        
-        case authActionTypes.REFRESH_TOKEN:
+
+        case authActionTypes.REFRESHING_TOKEN:
             return {
                 ...state,
-                user: { ...user, accessToken: action.payload },
+                tokenRefreshing: true,
+                tokenRefreshed: false,
+                tokenRefreshError: null,
             };
+
+        case authActionTypes.TOKEN_REFRESHED:
+            return {
+                ...state,
+                tokenRefreshing: false,
+                tokenRefreshed: true,
+                tokenRefreshError: null,
+            };
+        
+        case authActionTypes.TOKEN_REFRESH_ERROR:
+            return {
+                ...state,
+                tokenRefreshing: false,
+                tokenRefreshed: false,
+                tokenRefreshError: action.payload,
+            };
+
+        
+        // case authActionTypes.REFRESH_TOKEN:
+        //     return {
+        //         ...state,
+        //         user: { ...user, accessToken: action.payload },
+        //     };
 
         default:
             return state;

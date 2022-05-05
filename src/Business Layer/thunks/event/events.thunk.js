@@ -2,7 +2,7 @@ import EventDataService from '../../../Data Layer/services/event/event.service';
 import eventActions from '../../actions/event/event.actions'
 
 
-export const getEvents = () => (dispatch) => {
+const getEvents = () => (dispatch) => {
 
     dispatch(eventActions.eventsLoading());
 
@@ -14,7 +14,7 @@ export const getEvents = () => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventsLoadingError(error.message)));
 };
 
-export const getEvent = (id) => (dispatch) => {
+const getEvent = (id) => (dispatch) => {
 
     dispatch(eventActions.eventLoading());
 
@@ -26,7 +26,7 @@ export const getEvent = (id) => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventLoadingError(error.message)));    
 };
 
-export const updateEvent = (id, data) => (dispatch) => {
+const updateEvent = (id, data) => (dispatch) => {
 
     dispatch(eventActions.eventUpdating());
 
@@ -38,7 +38,7 @@ export const updateEvent = (id, data) => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventUpdateError(error.message)));    
 };
 
-export const createEvent = (data) => (dispatch) => {
+const createEvent = (data) => (dispatch) => {
 
     dispatch(eventActions.eventCreating());
 
@@ -50,3 +50,25 @@ export const createEvent = (data) => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventCreateError(error.message)));    
 };
 
+const deleteEvent = (data) => (dispatch) => {
+
+    dispatch(eventActions.eventDeleting());
+
+    EventDataService.deleteEvent(data)
+        .then((response) => {
+            console.log('response', response.data);
+            dispatch(eventActions.eventDeleted(response.data))
+        })
+        .catch((error) => dispatch(eventActions.eventDeleteError(error.message)));    
+};
+
+
+export {
+
+    getEvents,
+    getEvent,
+    updateEvent,
+    createEvent,
+    deleteEvent,
+    
+}

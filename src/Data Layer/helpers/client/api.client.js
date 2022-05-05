@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const url = process.env.REACT_APP_API_URL;
-const token = sessionStorage.getItem("user");
+const token = sessionStorage.getItem("access");
 
 const http = axios.create({
     baseURL: url,

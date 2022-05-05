@@ -31,9 +31,20 @@ const logOutError = (errorMessage) => ({
     payload: errorMessage,
 })
 
-const refreshToken = (accessToken) => ({
-      type: authActionTypes.REFRESH_TOKEN,
-      payload: accessToken,
+// Refresh Token
+
+const refreshingToken = () => ({
+      type: authActionTypes.REFRESHING_TOKEN,
+})
+
+const tokenRefereshed = (accessToken) => ({
+    type: authActionTypes.TOKEN_REFRESHED,
+    payload: accessToken,
+})
+
+const tokenRefereshError = (errorMessage) => ({
+    type: authActionTypes.TOKEN_REFRESH_ERROR,
+    payload: errorMessage,
 })
 
 
@@ -48,6 +59,8 @@ export default {
     loggedOut,
     logOutError,
 
-    refreshToken,
+    refreshingToken,
+    tokenRefereshed,
+    tokenRefereshError,
 
 }
