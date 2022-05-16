@@ -1,6 +1,7 @@
 import http from "../../helpers/client/api.client";
 import axios from "axios";
 import { set } from "date-fns";
+// import Cookies from 'universal-cookie';
 
 const AUTH_ENDPOINT = "/api/"
 
@@ -10,6 +11,7 @@ const AUTH_ENDPOINT = "/api/"
 
 const currentAccessToken = sessionStorage.getItem("access");
 
+// const cookies = new Cookies();
 
 class AuthDataService {
     async login(username, password) {
@@ -44,6 +46,7 @@ class AuthDataService {
     }
 
     setRefreshToken(token) {
+        // cookies.set("refresh", token, { path: "/" }, { expires: new Date(set(new Date(), { hours: 1 })) }, { secure: true }, { sameSite: "None" }, {httpOnly : true} );
         sessionStorage.setItem("refresh", JSON.stringify(token));
     }
 

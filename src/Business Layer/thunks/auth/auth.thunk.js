@@ -9,21 +9,30 @@ export const login = (username, password) => (dispatch) => {
     AuthDataService.login(username, password)
         .then((response) => {
             // console.log('Thunk Response: ', response.data);
-            if (response.data.access) {
-                // console.log('Adding token to local storage');
-                // sessionStorage.setItem("user", JSON.stringify(response.data.access));
+            
+            
+            if (response.data.account.type == 'CLUB'){
+                if (response.data.access && response.data) {
+                    // console.log('Adding token to local storage');
+                    // sessionStorage.setItem("user", JSON.stringify(response.data.access));
+                    
+                    // localStorage.setItem("user", JSON.stringify(response.data));
                 
-                // localStorage.setItem("user", JSON.stringify(response.data));
-
-                AuthDataService.setAccessToken(response.data.access);
-                AuthDataService.setRefreshToken(response.data.refresh);
+                    AuthDataService.setAccessToken(response.data.access);
+                    AuthDataService.setRefreshToken(response.data.refresh);
+                    sessionStorage.setItem( 'user', (JSON.stringify(response.data.account)));
+                    console.log('user', JSON.parse(sessionStorage.getItem('user')));
+                }
+                dispatch(authActions.loggedIn(response.data));
+                return response.data;
+                
             }
-            dispatch(authActions.loggedIn(response.data));
-            return response.data;
+            else {dispatch(authActions.logInError('You are not a club!'));}
         })
 
     .catch((error) => dispatch(authActions.logInError(error.message)));
 };
+
 
 
 

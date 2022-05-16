@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Avatar,
   Box,
@@ -14,10 +14,14 @@ import {
   Badge,
 } from '@mui/material';
 
+import { getAccount, updateAccount } from "../../../Business Layer/thunks/account/account.thunk";
+import {connect} from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Icon from '@mui/material/Icon';
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone';
 import {ChangePassword} from './change-password';
+
 
 
 const states = [
@@ -35,62 +39,78 @@ const states = [
   }
 ];
 
-const user = {
-  avatar: 'https://upload.wikimedia.org/wikipedia/en/8/80/St_George_SC_%28logo%29.png',
-  city: 'Addis Ababa,',
-  country: 'Ethiopia',
-  type: 'Club',
-  name: 'St. George SC',  
-  timezone: ''
-};
 
 
+const AccountProfileDetails = (props) => {
 
-export const AccountProfileDetails = (props) => {
+  let { id } = useParams();
+
+  let navigate = useNavigate();
+
+  const user = JSON.parse(sessionStorage.getItem('user'));
+
+  useEffect(() => {    
+    props.getaccount(user.id);     
+  }, []);
   
-  const [selectedImage, setSelectedImage] = useState({
-    profileImage: 'https://upload.wikimedia.org/wikipedia/en/8/80/St_George_SC_%28logo%29.png',
-});
+  
 
   const [values, setValues] = useState({
-    clubName: 'St. Gorge F.C.',
-    lastName: 'Mola',
-    email: 'stgeorgefc@gmail.com',
-    phone: '+251-116-604-030',
-    // phone: '0924913413',
+    // clubName: JSON.parse(sessionStorage.getItem('user').toString).id,
+    clubName: user.username,
+    website: JSON.parse(sessionStorage.getItem('user')).more.website,
+    phone_number: JSON.parse(sessionStorage.getItem('user')).phone_number,
+   
     region: 'Addis Ababa',
     country: 'Ethiopia',
-    
-    // startDate: new Date(),
-    // endDate: new Date(),
-    // demoDate: new Date(),
-    
+    more: {
+      // dob: format(new Date(), 'yyyy-MM-dd'),
+      gender: 'MALE',
+      is_assigned: false
+    }
   });
+
+  const handleSubmit = (event) => {
+  
+    event.preventDefault();
+    console.log('Submit: ', values);
+    props.updateaccount(user.id,values);
+    props.getscouts();
+    navigate('/scouts');
+  };
+
+  const handleMoreChange = (newDate) => {
+    setValues({
+      ...values,
+      more: {
+        ...values.more,
+        // dob: format(newDate, 'yyyy-MM-dd'),
+      }
+    });
+  };
 
   
 
   const handleChange = (event) => {
     event.preventDefault();
 
-    if (event.target.name === 'profilePicture') {
-      setSelectedImage(event.target.files[0]);
-      console.log(event.target.files[0])
-    } else {
+    // if (event.target.name === 'profilePicture') {
+    //   setSelectedImage(event.target.files[0]);
+    //   console.log(event.target.files[0])
+    // } else {
+
+    // }
+
     setValues({
       ...values,
       [event.target.name]: event.target.value, 
     });
     console.log(values);
-    }
   };
 
   return (
     
     <>
-
-
-
-     
           <form
             autoComplete="off"
             noValidate
@@ -132,11 +152,11 @@ export const AccountProfileDetails = (props) => {
                   >
                     <TextField
                       fullWidth
-                      label="Email Address"
-                      name="email"
+                      label="Website"
+                      name="website"
                       onChange={handleChange}
                       required
-                      value={values.email}
+                      value={values.website}
                       variant="outlined"
                     />
                   </Grid>
@@ -148,13 +168,13 @@ export const AccountProfileDetails = (props) => {
                     <TextField
                       fullWidth
                       label="Phone Number"
-                      name="phone"
+                      name="phone_number"
                       onChange={handleChange}
                       // type="number"
-                      value={values.phone}
+                      value={values.phone_number}
                       variant="outlined"
-                      error={values.phone.length > 10}
-                      helperText={values.phone.length > 10 ? 'Invalid!' : ' '}
+                      error={values.phone_number.length > 10}
+                      helperText={values.phone_number.length > 10 ? 'Invalid!' : ' '}
                     />
                   </Grid>
 
@@ -217,17 +237,31 @@ export const AccountProfileDetails = (props) => {
                 <Button
                   color="primary"
                   variant="contained"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
                 >
-                  Save details
+                  Update Profile
                 </Button>
               </Box>
             </Card>
            
           </form>
-      
-          
-     
-        
       </>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getaccount: (id) => dispatch(getAccount(id)),
+    updateaccount: (id,values) => dispatch(updateAccount(id,values)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountProfileDetails);

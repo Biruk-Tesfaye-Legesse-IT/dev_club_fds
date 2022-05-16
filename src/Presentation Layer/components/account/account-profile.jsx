@@ -6,42 +6,60 @@ import {
   CardActions,
   CardContent,
   Divider,
-  Typography
+  Typography,
+
 } from '@mui/material';
 // import BasicModal from '../modal';
 import Modal from '@mui/material/Modal';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import DatePicker from '../date-time-picker';
 import http from '../../../Data Layer/helpers/client/api.client';
+import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone';
+import Badge from '@mui/material/Badge';
+import styled from '@emotion/styled';
+import { getAccount, updateAccount } from "../../../Business Layer/thunks/account/account.thunk";
+import {connect} from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const user = {
-  avatar: 'https://upload.wikimedia.org/wikipedia/en/8/80/St_George_SC_%28logo%29.png',
-  city: 'Addis Ababa,',
-  country: 'Ethiopia',
-  type: 'Club',
-  name: 'St. George SC',
-  timezone: ''
-};
 
-const AUTH_ENDPOINT = "/api/"
+function AccountProfile(props) {
 
-async function login(username, password) {
-  console.log(username, password)
-  const response = await http()
-    .post("http://localhost:8000" + AUTH_ENDPOINT + "token/", { username, password });
-  // console.log(response.data)
-  if (response.data.access) {
-    // localStorage.setItem("userAccess", JSON.stringify(response.data.access));
-    sessionStorage.setItem("userAccess", JSON.stringify(response.data.access));
-    // console.log(localStorage.getItem("userAccess"))
-    console.log(sessionStorage.getItem("userAccess"))
-  }
-  return response.data;
-}
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
-export function AccountProfile(props) {
+  let navigate = useNavigate();
+
   
   // login("don", "pass")
+
+  useEffect (() => {
+    
+  }, [])
+
+  const imageHandler = (e) => {
+    
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setSelectedImage(reader.result);
+      
+    };
+  };
+
+  const [selectedImage, setSelectedImage] = useState({
+    profileImage: user.profile_picture,
+});
+
+const handleSubmit = (e) => {
+  // e.preventDefault();
+  
+  props.updateaccount(user.id, {
+    profile_picture: selectedImage,   
+    });
+  navigate('/account');
+};
+
+
 
   
   const [isModalOpen, setModalOpen] = useState(false);
@@ -57,25 +75,83 @@ export function AccountProfile(props) {
             flexDirection: 'column'
           }}
         >
+          <form>
+          <input type="file" id="file"  hidden onChange={(e) => {
+            
+            imageHandler(e);
+            setSelectedImage({
+              ...selectedImage,
+              profileImage: e.target.files[0]
+            })
+            
+          }} />
+            
+          <Button
+
+            onClick={() => {
+              document.getElementById('file').click();
+            }}  >
+
+          <Badge
+            overlap="circular"
+
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '1rem',
+              width: '100px',
+              height: '100px',
+              borderRadius: '50%',
+              backgroundColor: '#fff',
+              
+              border: '1px solid #e0e0e0',
+              position: 'relative',
+              
+            }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            badgeContent={
+              <CameraAltTwoToneIcon 
+                color='secondary'
+                sx={{
+                  fontSize: '2rem',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}
+                onClick={() => console.log('clicked')}
+                />
+              
+            }
+          >
           <Avatar
-            src={user.avatar}
+            src={selectedImage ? selectedImage : user.profile_picture}
+            
             sx={{
               height: 64,
-              mb: 2,
+              mb: 1,
               width: 64
+            
             }} />
+          </Badge>
+           
+            </Button>
+         
+          </form>
+          
           <Typography
             color="textPrimary"
             gutterBottom
             variant="h5"
           >
-            {user.name}
+            {user.more.club_name}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body2"
           >
-            {`${user.city} ${user.country}`}
+            {`${user.more.website}`}
           </Typography>
           <Typography
             color="textSecondary"
@@ -112,10 +188,12 @@ export function AccountProfile(props) {
         <Modal isOpen={isModalOpen} setIsOpen={setModalOpen} /> */}
 
         <Button
-          onClick={() => { console.log('Change Profile Picture'); } }
           color="primary"
           fullWidth
           variant="text"
+          onClick={() => {
+            handleSubmit();
+          }}
         >
           Change Profile Picture
         </Button>
@@ -123,3 +201,24 @@ export function AccountProfile(props) {
     </Card>
   );
 }
+
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 22,
+  height: 22,
+  border: `2px solid ${theme.palette.background.paper}`,
+}));
+
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getaccount: (id) => dispatch(getAccount(id)),
+    updateaccount: (id,values) => dispatch(updateAccount(id,values)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountProfile);

@@ -25,17 +25,27 @@ export const ChangePassword = (props) => {
         <CardContent>
           <TextField
             fullWidth
-            label="Password"
+            label="Old Password"
             margin="normal"
-            name="password"
+            name="old"
             onChange={handleChange}
             type="password"
-            value={values.password}
+            value={values.old}
             variant="outlined"
           />
           <TextField
             fullWidth
-            label="Confirm password"
+            label="New Password"
+            margin="normal"
+            name="new"
+            onChange={handleChange}
+            type="password"
+            value={values.new}
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            label="Confirm Password"
             margin="normal"
             name="confirm"
             onChange={handleChange}
