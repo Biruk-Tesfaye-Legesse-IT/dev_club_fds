@@ -1,17 +1,30 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material';
+import { getAccount, updateAccount } from "../../../Business Layer/thunks/account/account.thunk";
+import {connect} from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 
-export const ChangePassword = (props) => {
+const ChangePassword = (props) => {
+  const user = JSON.parse(sessionStorage.getItem('user'));
   const [values, setValues] = useState({
     password: '',
     confirm: ''
   });
+
+  let navigate = useNavigate();
 
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Submit: ', values);
+    props.updateaccount(user.id,values);
+    navigate('/');
   };
 
   return (
@@ -66,10 +79,24 @@ export const ChangePassword = (props) => {
             color="primary"
             variant="contained"
           >
-            Update
+            Change Password
           </Button>
         </Box>
       </Card>
     </form>
   );
 };
+
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateaccount: (id,values) => dispatch(updateAccount(id,values)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

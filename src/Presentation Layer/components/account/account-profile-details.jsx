@@ -57,36 +57,38 @@ const AccountProfileDetails = (props) => {
 
   const [values, setValues] = useState({
     // clubName: JSON.parse(sessionStorage.getItem('user').toString).id,
-    clubName: user.username,
-    website: JSON.parse(sessionStorage.getItem('user')).more.website,
-    phone_number: JSON.parse(sessionStorage.getItem('user')).phone_number,
-   
-    region: 'Addis Ababa',
-    country: 'Ethiopia',
+    username: user.username,
+    phone_number: user.phone_number,
+    address: user.address,
+    
     more: {
       // dob: format(new Date(), 'yyyy-MM-dd'),
-      gender: 'MALE',
-      is_assigned: false
+      club_name: user.more.club_name,
+      acronym: user.more.acronym,
+      organization_type: user.more.organization_type,
+      website: user.more.website,
+      establishment_year: user.more.establishment_year,
     }
   });
 
   const handleSubmit = (event) => {
   
-    event.preventDefault();
+    // event.preventDefault();
     console.log('Submit: ', values);
     props.updateaccount(user.id,values);
-    props.getscouts();
-    navigate('/scouts');
+    navigate('/');
   };
 
-  const handleMoreChange = (newDate) => {
+  const handleMoreChange = (event) => {
     setValues({
       ...values,
       more: {
         ...values.more,
-        // dob: format(newDate, 'yyyy-MM-dd'),
+        [event.target.name]: event.target.value, 
+
       }
     });
+    console.log(values);
   };
 
   
@@ -94,18 +96,11 @@ const AccountProfileDetails = (props) => {
   const handleChange = (event) => {
     event.preventDefault();
 
-    // if (event.target.name === 'profilePicture') {
-    //   setSelectedImage(event.target.files[0]);
-    //   console.log(event.target.files[0])
-    // } else {
-
-    // }
-
     setValues({
       ...values,
       [event.target.name]: event.target.value, 
     });
-    console.log(values);
+   
   };
 
   return (
@@ -123,6 +118,8 @@ const AccountProfileDetails = (props) => {
               />
               <Divider />
               <CardContent>
+
+              {/* ================= 1 ====================== */}
                 <Grid
                   container
                   spacing={3}
@@ -134,13 +131,31 @@ const AccountProfileDetails = (props) => {
                   >
                     <TextField
                       fullWidth
-                      // helperText="Please specify the first name"
+                     
                       label="Club Name"
                       name="clubName"
-                      onChange={handleChange}
+                      onChange={handleMoreChange}
                       // required
                       disabled
-                      value={values.clubName}
+                      value={values.more.club_name}
+                      variant="outlined"
+                    />
+                  </Grid>
+
+                 {/* ================= 2 ====================== */}
+
+                  <Grid
+                    item
+                    md={6}
+                    xs={12}
+                  >
+                    <TextField
+                      fullWidth
+                      label="Username"
+                      name="username"
+                      onChange={handleChange}
+                      required
+                      value={values.username}
                       variant="outlined"
                     />
                   </Grid>
@@ -152,14 +167,28 @@ const AccountProfileDetails = (props) => {
                   >
                     <TextField
                       fullWidth
-                      label="Website"
-                      name="website"
-                      onChange={handleChange}
+                      label="Organization Acronym"
+                      name="acronym"
+                      onChange={handleMoreChange}
                       required
-                      value={values.website}
+                      // select
+                      SelectProps={{ native: true }}
+                      value={values.more.acronym}
                       variant="outlined"
-                    />
+                    >
+                      {/* {states.map((option) => (
+                        <option
+                          key={option.value}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </option>
+                      ))} */}
+                    </TextField>
                   </Grid>
+                  
+                
+                  {/* ================= 3 ====================== */}
                   <Grid
                     item
                     md={6}
@@ -185,11 +214,31 @@ const AccountProfileDetails = (props) => {
                   >
                     <TextField
                       fullWidth
-                      label="Country"
-                      name="country"
+                      label="Address"
+                      name="address"
                       onChange={handleChange}
                       required
-                      value={values.country}
+                      value={values.address}
+                      variant="outlined"
+                    />
+                  </Grid>
+
+                
+
+                  {/* ================= 4 ====================== */}
+
+                  <Grid
+                    item
+                    md={6}
+                    xs={12}
+                  >
+                    <TextField
+                      fullWidth
+                      label="Website"
+                      name="website"
+                      onChange={handleMoreChange}
+                      // type="number"
+                      value={values.more.website}
                       variant="outlined"
                     />
                   </Grid>
@@ -201,28 +250,16 @@ const AccountProfileDetails = (props) => {
                   >
                     <TextField
                       fullWidth
-                      label="Select Region"
-                      name="region"
-                      onChange={handleChange}
+                      label="Establishment Year"
+                      name="establishment_year"
+                      onChange={handleMoreChange}
                       required
-                      select
-                      SelectProps={{ native: true }}
-                      value={values.state}
+                      value={values.more.establishment_year}
                       variant="outlined"
-                    >
-                      {states.map((option) => (
-                        <option
-                          key={option.value}
-                          value={option.value}
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </TextField>
+                    />
                   </Grid>
 
-                
-                
+                  {/* ================= 5 ====================== */}
 
                 </Grid>
               </CardContent>

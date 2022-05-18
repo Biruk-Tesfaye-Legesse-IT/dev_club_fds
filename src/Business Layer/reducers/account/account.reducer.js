@@ -6,6 +6,7 @@ const initialState = {
     accountCreating: false,
     accountDeleting: false,
     accountUpdating: false,
+    accountLocalUpdating: false,
     error: null,
 
 }
@@ -75,6 +76,27 @@ export default function eventsReducer(state = initialState, action) {
             return {
                 ...state,
                 accountUpdating: false,
+                error: action.payload,
+            };
+
+         // ===================================================
+
+         case accountActionTypes.ACCOUNT_LOCAL_UPDATNG:
+            return {
+                ...state,
+                accountLocalUpdating: true,
+                error: null
+            }
+        case accountActionTypes.ACCOUNT_LOCAL_UPDATED:
+            return {
+                ...state,
+                account: action.payload,
+                accountLocalUpdating: false,
+            };
+        case accountActionTypes.ACCOUNT__LOCAL_UPDATE_ERROR:
+            return {
+                ...state,
+                accountLocalUpdating: false,
                 error: action.payload,
             };
 

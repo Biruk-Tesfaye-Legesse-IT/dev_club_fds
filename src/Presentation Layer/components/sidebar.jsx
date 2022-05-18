@@ -7,6 +7,7 @@ import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import LinearScaleIcon from '@mui/icons-material/LinearScale';
 import PeopleIcon from '@mui/icons-material/People';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const items = [
@@ -25,6 +26,11 @@ const items = [
     href: '/account',
     icon: (<ManageAccountsRoundedIcon/>),
     title: 'Account'
+  },
+  {
+    href: '/parameters',
+    icon: (<LinearScaleIcon/>),
+    title: 'Parameters',
   },
 
   // {

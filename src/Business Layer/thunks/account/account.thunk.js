@@ -14,17 +14,20 @@ const getAccount = (id) => (dispatch) => {
         .catch((error) => dispatch(accountActions.accountLoadingError(error.message)));   
 };
 
-const updateAccount = (id, data) => (dispatch) => {
+const updateAccount = (id, data) => async (dispatch) => {
 
     dispatch(accountActions.accountUpdating());
 
     AccountDataService.updateAccount(id,data)
         .then((response) => {
             console.log('response', response.data);
+            
+            AccountDataService.updateLocalAccount(JSON.stringify(response.data));
             dispatch(accountActions.accountUpdated(response.data))
         })
         .catch((error) => dispatch(accountActions.accountUpdateError(error.message)));    
 };
+
 
 const createAccount = (data) => (dispatch) => {
 

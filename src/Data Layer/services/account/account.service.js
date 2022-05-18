@@ -12,6 +12,9 @@ class AccountDataService {
     updateAccount(id, data) {
         return http.patch(`${ACCOUNT_ENDPOINT}${id}/`, data);
     }
+    updateLocalAccount = (data) =>{
+        sessionStorage.setItem('user', data);
+    }; 
     deleteAccount(id) {
         return http.delete(`${ACCOUNT_ENDPOINT}${id}`);
     }

@@ -48,7 +48,9 @@ function AccountProfile(props) {
     reader.readAsDataURL(file);
     reader.onload = () => {
       console.log(reader.result);
-      setSelectedImage(reader.result);
+      setSelectedImage(selectedImage => ({
+        selectedImage: reader.result}),
+        )
     };
 
 
@@ -71,8 +73,6 @@ const handleSubmit = () => {
 
     console.log(formData.get('profile_picture'));
     props.updateaccount(user.id, {});
-    navigate('/');
-  
   // const file = e.target.files[0];
   // const reader = new FileReader();
   // reader.readAsDataURL(file);
@@ -103,8 +103,8 @@ const handleSubmit = () => {
             
             imageHandler(e);
             setSelectedImage({
-              ...selectedImage,
-              profileImage: e.target.files[0]
+              selectedImage: e.target.files[0],
+              // profileImage: e.target.files[0]
             })
             
           }} />
@@ -148,20 +148,10 @@ const handleSubmit = () => {
               
             }
           >
-         <Box
-        component="img"
-        sx={{
-          height: 233,
-          width: 350,
-          maxHeight: { xs: 233, md: 167 },
-          maxWidth: { xs: 350, md: 250 },
-        }}
-        alt="The house from the offer."
-        src={selectedImage.profileImage}
-      />
+
           <Avatar
-            
-            src={ selectedImage ? selectedImage : selectedImage.profileImage }
+            {...console.log(selectedImage)}
+            src={ selectedImage.selectedImage ? selectedImage.selectedImage : selectedImage.profileImage }
             // src={selectedImage ? selectedImage :  }
             {...console.log('First', selectedImage)}
             {...console.log('Secon',  defaultImage)}

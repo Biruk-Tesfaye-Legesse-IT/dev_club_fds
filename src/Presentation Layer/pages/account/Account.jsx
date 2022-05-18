@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Box, Container, Grid, Typography, Card } from '@mui/material';
-import AccountProfile from '../components/account/account-profile';
-import AccountProfileDetails from '../components/account/account-profile-details';
+import AccountProfile from '../../components/account/account-profile';
+import AccountProfileDetails from '../../components/account/account-profile-details';
 import { styled } from '@mui/system';
-import Navbar from '../components/navbar';
-import { Sidebar } from '../components/sidebar';
-import {ChangePassword} from '../components/account/change-password';
+import Navbar from '../../components/navbar';
+import { Sidebar } from '../../components/sidebar';
+
+import ChangePassword from '../../components/account/change-password';
 import { connect } from 'react-redux';
 
 

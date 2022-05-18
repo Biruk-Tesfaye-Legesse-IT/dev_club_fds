@@ -21,7 +21,8 @@ export const login = (username, password) => (dispatch) => {
                     AuthDataService.setAccessToken(response.data.access);
                     AuthDataService.setRefreshToken(response.data.refresh);
                     sessionStorage.setItem( 'user', (JSON.stringify(response.data.account)));
-                    console.log('user', JSON.parse(sessionStorage.getItem('user')));
+                    console.log('sessionData:', JSON.parse(sessionStorage.getItem('user')));    
+                    console.log('responseData', JSON.stringify(response.data.account));
                 }
                 dispatch(authActions.loggedIn(response.data));
                 return response.data;

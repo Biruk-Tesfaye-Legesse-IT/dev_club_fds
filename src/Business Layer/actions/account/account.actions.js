@@ -46,6 +46,21 @@ const accountUpdateError = (errorMessage) => ({
     payload: errorMessage,
 })
 
+// UPDATE MY LOCAL ACCOUNT 
+const accountLocalUpdating = () => {
+    return { type: accountActionTypes.ACCOUNT_LOCAL_UPDATNG }
+}
+
+const accountLocalUpdated = (account) => ({
+    type: accountActionTypes.ACCOUNT_LOCAL_UPDATED,
+    payload: account,
+})
+
+const accountLocalUpdateError = (errorMessage) => ({
+    type: accountActionTypes.ACCOUNT_LOCAL_UPDATE_ERROR,
+    payload: errorMessage,
+})
+
 
 // DELETE AN ACCOUNT 
 const accountDeleting = () => {
@@ -76,6 +91,10 @@ export default {
     accountUpdating,
     accountUpdated,
     accountUpdateError,
+
+    accountLocalUpdating,
+    accountLocalUpdated,
+    accountLocalUpdateError,
 
     accountDeleting,
     accountDeleted,

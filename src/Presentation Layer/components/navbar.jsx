@@ -25,8 +25,18 @@ const DashboardNavbarRoot = styled(AppBar)(( {theme} ) => ({
 }));
 
 const Navbar = function (props) {
+  const user = JSON.parse(sessionStorage.getItem('user'))
   const navigate = useNavigate()
   const { onSidebarOpen, logout, ...other } = props;
+
+ 
+
+    useEffect(() => {
+      if (props.account.accountUpdating) {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+      }
+      console.log(props.account.accountUpdating)
+    }, []);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -117,7 +127,7 @@ const Navbar = function (props) {
               width: 40,
               ml: 1
             }}
-            src="https://upload.wikimedia.org/wikipedia/en/8/80/St_George_SC_%28logo%29.png"
+            src= { user.profile_picture}
           >
             <UserCircleIcon fontSize="small" />
           </Avatar>
@@ -201,7 +211,8 @@ Navbar.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    account: state.account
   };
 }
 
