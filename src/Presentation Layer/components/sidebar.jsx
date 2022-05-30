@@ -9,6 +9,7 @@ import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 import LinearScaleIcon from '@mui/icons-material/LinearScale';
 import PeopleIcon from '@mui/icons-material/People';
+import ArticleIcon from '@mui/icons-material/Article';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const items = [
   {
@@ -16,6 +17,11 @@ const items = [
     // icon: (<ChartBarIcon fontSize="small" />),
     icon: (<EventAvailableRoundedIcon/>),
     title: 'Events'
+  },
+  {
+    href: '/applicationEvents',
+    icon: (<ArticleIcon/>),
+    title: 'Applications',
   },
   {
     href: '/scouts',
@@ -28,10 +34,11 @@ const items = [
     title: 'Account'
   },
   {
-    href: '/parameters',
+    href: '/skills',
     icon: (<LinearScaleIcon/>),
-    title: 'Parameters',
+    title: 'Skills',
   },
+
 
   // {
   //   href: '/products',

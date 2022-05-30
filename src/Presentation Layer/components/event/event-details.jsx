@@ -61,7 +61,11 @@ const EventDetailComponent = function(props) {
 
   function loadedShow(){
     if (props.event.eventLoading) {
-      return <CircularProgress />
+      return <>
+        <Box display="flex" justifyContent="center" alignItems="center" m={2}>
+          <CircularProgress />
+        </Box>
+      </>
     }
 
     else if (props.event.event) {
@@ -72,51 +76,7 @@ const EventDetailComponent = function(props) {
          
      
          
-     {/* <Avatar
-       sx={{
-         mx: 'auto',
-         mb: 1,
-         mt: 3,
-         width: theme.spacing(12),
-         height: theme.spacing(12)
-       }}
-       variant="rounded"
-       alt="Craig Donin"
-       src="https://avatars.githubusercontent.com/u/60609723?v=4"
-     />
-     <Typography align="center" variant="h4" gutterBottom>
-        {`${event.first_name} ${event.last_name}`}
-     </Typography>
-     <Typography align="center" variant="subtitle1" gutterBottom>
-       Senior Scout
-     </Typography> */}
-     
-     {/* <Box display="flex" alignItems="center" justifyContent="center">
-       <Rating value={4} defaultValue={5} precision={1} readOnly />
-       <Typography variant="h5" sx={{ pl: 0.5 }}>
-         4.1
-       </Typography>
-     </Box> */}
-     
-     {/* <Box py={2} display="flex" alignItems="center" justifyContent="center"> */}
-       {/* <Tooltip arrow placement="top" title="Call">
-         <IconButton color="primary" sx={{ mx: 0.5 }}>
-           <PhoneTwoToneIcon />
-         </IconButton>
-       </Tooltip> */}
-       {/* <Tooltip arrow placement="top" title="Send email"> */}
-         {/* <IconButton color="primary" sx={{ mx: 0.5 }}>
-           <EmailTwoToneIcon /> 
-         </IconButton> */}
-         {/* <Button onClick={() => props.setOpenModal(false)}><EmailTwoToneIcon /> {'\u00A0'} Contact the scout</Button> */}
-       
-       {/* </Tooltip> */}
-       {/* <Tooltip arrow placement="top" title="Send message">
-         <IconButton color="primary" sx={{ mx: 0.5 }}>
-           <MessageTwoToneIcon />
-         </IconButton>
-       </Tooltip> */}
-     {/* </Box> */}
+   
        <Typography variant='h3'>
       <Grid
         container
@@ -125,16 +85,15 @@ const EventDetailComponent = function(props) {
         >
 
      <Grid
-                  item
-                  lg={12}
-                  md={12}
-                  xs={12}
-              >
+        item
+        lg={12}
+        md={12}
+        xs={12}
+    >
      <Card>
+       
      <CardContent>
        <List sx={{ px: 2 }}>
-
-     
 
          <ListItem sx={{ py: 1.5 }}>
            <ListItemText
@@ -264,13 +223,11 @@ const EventDetailComponent = function(props) {
         xs={12}
     >
       <Card>
-        <CardHeader>
-          <Typography variant="h6" gutterBottom>
-            Title
-          </Typography>
-        </CardHeader>
+        <CardHeader title = 'Me' />
+         
+       
      <CardContent>
-       <List sx={{ px: 2 }}>
+       <List sx={{ px: 2}}>
         
          <ListItem sx={{ py: 1.5 }}>
            <ListItemText
@@ -320,11 +277,8 @@ const EventDetailComponent = function(props) {
         xs={12}
     >
       <Card>
-        <CardHeader>
-          <Typography variant="h6" gutterBottom>
-            Title
-          </Typography>
-        </CardHeader>
+        <CardHeader title = 'Unlikely' />
+        
      <CardContent>
        <List sx={{ px: 2 }}>
         

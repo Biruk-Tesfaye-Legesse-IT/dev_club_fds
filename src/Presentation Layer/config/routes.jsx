@@ -16,10 +16,19 @@ import Scout from '../pages/scouts/Scout';
 import HireNewScout from '../pages/scouts/HireNewScout';
 import EditScout from '../pages/scouts/EditScout';
 import ScoutDetails from '../pages/scouts/ScoutDetails';
+
+import Skill from '../pages/skills/Skill';
+import CreateNewSkill from '../pages/skills/CreateNewSkill';
+import EditSkill from '../pages/skills/EditSkill';
+
+import Applications from '../pages/applications/Applications';
+import Applicants from '../pages/applicants/Applicants';
+import Candidates from '../pages/candidates/Candidates';
+import Accepteds from '../pages/accepteds/Accepteds';
+
 import Parameters from '../pages/parameters/parameters';
 
 import PrivateRoute from './routeGuard';
-
 
 
 function RoutedPages() {
@@ -45,6 +54,18 @@ function RoutedPages() {
                     <Route exact path="/addScout" element={< HireNewScout />} />
                     <Route exact path="/editScout/:id" element={< EditScout />} />
                     <Route exact path="/scoutDetails/:id" element={< ScoutDetails />} />
+
+                    {/* Application Routes */}
+                    <Route exact path="/applicationEvents" element={<  Applications />} />               
+                    <Route exact path="/applicants/:id" element={< Applicants />} />
+                    <Route exact path="/candidates/:id" element={< Candidates />} />
+                    <Route exact path="/accepteds/:id" element={< Accepteds />} />
+
+                    {/* Skill Routes */}
+                    <Route exact path="/skills" element={<  Skill />} />               
+                    <Route exact path="/addSkill" element={< CreateNewSkill />} />
+                    <Route exact path="/editSkill/:id" element={< EditSkill />} />
+                    {/* <Route exact path="/scoutDetails/:id" element={< ScoutDetails />} /> */}
 
 
                     {/* Account Routes */}

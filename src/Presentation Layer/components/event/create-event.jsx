@@ -58,19 +58,19 @@ const location_options = [
 
 const required_position_options = [
   {
-    value: 'Any',
+    value: 'any',
     label: 'Any'
   },
   {
-    value: 'Gk',
+    value: 'goalkeepers',
     label: 'GK'
   },
   {
-    value: 'Def',
+    value: 'defenders',
     label: 'DEF'
   },
   {
-    value: 'Mid',
+    value: 'midfielders',
     label: 'MID'
   },
   // {
@@ -78,7 +78,7 @@ const required_position_options = [
   //   label: 'ATT'
   // },
   {
-    value: 'Str',
+    value: 'strikers',
     label: 'STR'
   },
 
@@ -86,11 +86,11 @@ const required_position_options = [
 
 const gender_options = [
   {
-    value: 'Male',
+    value: 'MALE',
     label: 'Male'
   },
   {
-    value: 'Female',
+    value: 'FEMALE',
     label: 'Female'
   },
 ];
@@ -110,7 +110,9 @@ const CreateEvent = function (props) {
     location: 'aa',  //optioned
     gender: 'MALE',
     session_time_for_each: 20, //
-    club: 6,
+
+    club: '',
+    scouts: [],
   });
 
   const handleStartingDateChange = (newDate) => {
@@ -119,8 +121,6 @@ const CreateEvent = function (props) {
       ...values,
       starting_date: format(newDate, 'yyyy-MM-dd'),
     });
-    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
-    // console.log(values.date.getDate);
     console.log('Start Date: ', values.startDate);
   };
 
@@ -283,16 +283,16 @@ const CreateEvent = function (props) {
 
             <TextField
                 fullWidth
-                label="Gender"
+                label="Required Gender"
                 name="gender"
                 onChange={handleChange}
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.location}
+                value={values.gender}
                 variant="outlined"
               >
-                {location_options.map((option) => (
+                {gender_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -303,7 +303,7 @@ const CreateEvent = function (props) {
               </TextField>
             </Grid>
 
-            <Grid
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -329,7 +329,7 @@ const CreateEvent = function (props) {
                   </option>
                 ))}
               </TextField>
-            </Grid>
+            </Grid> */}
 
             <Grid
               item

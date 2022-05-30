@@ -22,6 +22,7 @@ import { useParams } from 'react-router-dom';
 import { getEvent, updateEvent, getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { format } from 'date-fns'
 
 
 
@@ -65,38 +66,38 @@ const required_position_options = [
     label: 'Any'
   },
   {
-    value: 'GK',
+    value: 'goalkeepers',
     label: 'GK'
   },
   {
-    value: 'DMF',
-    label: 'DMF'
-  }
+    value: 'defenders',
+    label: 'DEF'
+  },
+  {
+    value: 'midfielders',
+    label: 'MID'
+  },
+  // {
+  //   value: 'Att',
+  //   label: 'ATT'
+  // },
+  {
+    value: 'strikers',
+    label: 'STR'
+  },
+
 ];
 
 const gender_options = [
   {
-    value: 'Male',
+    value: 'MALE',
     label: 'Male'
   },
   {
-    value: 'Female',
+    value: 'FEMALE',
     label: 'Female'
   },
 ];
-
-// const useStyles = makeStyles({
-//   root: {
-//     background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-//     border: 0,
-//     borderRadius: 3,
-//     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-//     color: "white",
-//     height: 48,
-//     padding: "0 30px"
-//   }
-// });
-
 
 const EditEventComponent = function (props) {
 
@@ -113,18 +114,16 @@ const EditEventComponent = function (props) {
   // ========================================
 
   const [values, setValues] = useState({
-    description: '',
-    starting_date: new Date(),
-    application_deadline: new Date(),
-    ending_date: new Date(),
-    location: '',
-    education_level: '',
-    required_position: '',
-    demo_date: new Date(),
-    age_limit: 21,
-    gender: '',
-    session_time_for_each: 20,
-   
+    description: props.events.event.description,
+    starting_date: props.events.event.starting_date,
+    application_deadline: props.events.event.application_deadline,
+    ending_date: props.events.event.ending_date,
+    location: props.events.event.location,
+    education_level: props.events.event.education_level,
+    required_position: props.events.event.required_position,
+    age_limit: props.events.event.age_limit,
+    gender: props.events.event.gender,
+    session_time_for_each: props.events.event.session_time_for_each
   }
   );
 
@@ -132,8 +131,21 @@ const EditEventComponent = function (props) {
 
   useEffect(() => {
     if (props.events.event) {
-      setValues(props.events.event);
+      setValues(
+        {
+          description: props.events.event.description,
+          starting_date: props.events.event.starting_date,
+          application_deadline: props.events.event.application_deadline,
+          ending_date: props.events.event.ending_date,
+          location: props.events.event.location,
+          education_level: props.events.event.education_level,
+          required_position: props.events.event.required_position,
+          gender: props.events.event.gender,
+          session_time_for_each: props.events.event.session_time_for_each
+        },
+      )
     }
+    console.log(props.events.event);
   }, [props.events.event]);
 
   // ==============================================
@@ -142,39 +154,27 @@ const EditEventComponent = function (props) {
     e.preventDefault();
     console.log('Values', values);
     props.updateevent(id, values);
-    props.getevent(id);
-    props.getevents();
-    navigate('/');
+    // props.getevent(id);
+    // props.getevents();
+    // navigate('/');
   };
 
-  const handleStartDateChange = (newDate) => {
+  const handleStartingDateChange = (newDate) => {
     
     setValues({
       ...values,
-      startDate: newDate,
+      starting_date: format(newDate, 'yyyy-MM-dd'),
     });
-    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
-    // console.log(values.date.getDate);
     console.log('Start Date: ', values.startDate);
   };
 
-  const handleEndDateChange = (newDate) => {
+  const handleDeadlineDateChange = (newDate) => {
     setValues({
       ...values,
-      endDate: newDate,
+      application_deadline: format(newDate, 'yyyy-MM-dd'),
     });
     console.log('End Date: ', values.endDate);
   };
-
-  const handleDemoDateChange = (newDate) => {
-    setValues({
-      ...values,
-      demoDate: newDate,
-    });
-    console.log('Demo Date: ', values.demoDate);
-    console.log(values);
-  };
-
 
   const handleChange = (event) => {
     setValues({
@@ -182,16 +182,6 @@ const EditEventComponent = function (props) {
       [event.target.name]: event.target.value, 
     });
     console.log(values);
-  };
-
-  const handleDateChange = (newDate) => {
-    setValues({
-      ...values,
-      date: newDate,
-    });
-    // const getFormattedDate = ({ month, day, year }) => `${month}/${day}/${year}`
-    // console.log(values.date.getDate);
-    console.log(values.date);
   };
 
   // =========================================================
@@ -204,234 +194,257 @@ const EditEventComponent = function (props) {
       return (
 
         <form
-          autoComplete="off"
-          noValidate
-          {...props}
-          >
-          <Card>
-            {/* <CardHeader
-              subheader="The information can be edited"
-              title="Profile"
-            /> */}
-            <Divider />
-            <CardContent>
+        autoComplete="off"
+        noValidate
+        {...props}
+      >
+        <Card>
+          {/* <CardHeader
+            subheader="The information can be edited"
+            title="Profile"
+          /> */}
+          <Divider />
+          <CardContent>
+            <Grid
+              container
+              spacing={3}
+            >
               <Grid
-                container
-                spacing={3}
+                item
+                md={12}
+                xs={12}
               >
-                <Grid
-                  item
-                  md={12}
-                  xs={12}
-                >
-                  <TextField
-                    fullWidth
-                    helperText="Please give brief description of the event"
-                    label="Event Description"
-                    name="description"
-                    onChange={handleChange}
-                    required
-                    value={values.description}
-                    defaultValue={props.events.event.description}
-                    variant="outlined"
-                  />
-                </Grid>
-              
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    fullWidth
-                    label="Email Address"
-                    name="email"
-                    onChange={handleChange}
-                    required
-                    value={values.email}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    fullWidth
-                    label="Required Position"
-                    name="required_positions"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.required_positions}
-                    variant="outlined"
-                  >
-                    {required_position_options.map((option) => (
-                      <option
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-
                 <TextField
-                    fullWidth
-                    label="Location"
-                    name="location"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.location}
-                    variant="outlined"
-                  >
-                    {location_options.map((option) => (
-                      <option
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
-                  <TextField
-                    fullWidth
-                    label="Education Level"
-                    name="education_level"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.education_level}
-                    variant="outlined"
-                  >
-                    {education_level_options.map((option) => (
-                      <option
-                        key={option.value}
-                        value={option.value}
-                      >
-                        {option.label}
-                      </option>
-                    ))}
-                  </TextField>
-                </Grid>
-
-
+                  fullWidth
+                  helperText="Please give brief description of the event"
+                  label="Event Description"
+                  name="description"
+                  onChange={handleChange}
+                  required
+                  value={values.description}
+                  variant="outlined"
+                />
+              </Grid>
+             
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
               
-
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
+                <TextField
+                  fullWidth
+                  error={values.age_limit < 18}
+                  label="Age Limit"
+                  name="age_limit"
+                  onChange={handleChange}
+                  required
+                  value={values.age_limit}
+                  validationError="Please enter a valid age limit"
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  label="Required Position"
+                  name="required_positions"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values.required_positions}
+                  variant="outlined"
                 >
-                  
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    
-                    <DateTimePicker
-                      renderInput={(params) => <TextField 
-                      
-                        {...params} />}
-                      label="Start Date"
-                      name='startDate'
-                      value={values.startDate}
-                      onChange={handleStartDateChange}
-                      // minDate={new Date('2020-02-14')}
-                      // minTime={new Date(0, 0, 0, 8)}
-                      // maxTime={new Date(0, 0, 0, 18, 45)}
-                    />
-                  
-                </LocalizationProvider>
-
-                </Grid>
-
-
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
+                  {required_position_options.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid>
+  
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+  
+              <TextField
+                  fullWidth
+                  label="Location"
+                  name="location"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values.location}
+                  variant="outlined"
                 >
-
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    
-                    <DateTimePicker
-                      renderInput={(params) => <TextField 
-                      
-                        {...params} />}
-                      label="End Date"
-                      name='endDate'
-                      value={values.endDate}
-                      onChange={handleEndDateChange}
-                      // minDate={new Date('2020-02-14')}
-                      // minTime={new Date(0, 0, 0, 8)}
-                      // maxTime={new Date(0, 0, 0, 18, 45)}
-                    />
-                  
-                </LocalizationProvider>
-
-                </Grid>
-
+                  {location_options.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid>
+  
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+  
+              <TextField
+                  fullWidth
+                  label="Required Gender"
+                  name="gender"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values.gender}
+                  variant="outlined"
+                >
+                  {gender_options.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid>
+  
+              {/* <Grid
+                item
+                md={6}
+                xs={12}
+              >
+  
+              <TextField
+                  fullWidth
+                  label="Scouts"
+                  name="scouts"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values.location}
+                  variant="outlined"
+                >
+                  {location_options.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid> */}
+  
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  label="Education Level"
+                  name="education_level"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  value={values.education_level}
+                  variant="outlined"
+                >
+                  {education_level_options.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </TextField>
+              </Grid>
+  
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
                 
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
                   
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-
                 <DatePicker
-                  label="Demo Date"
-                  name='demoDate'
-                  value={values.demoDate}
-                  minDate={new Date('2017-01-01')}
-                  onChange={handleDemoDateChange}
+                  label="Starting Date"
+                  name='starting_date'
+                  value={values.starting_date}
+                  minDate={new Date()}
+                  onChange={handleStartingDateChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
-                    
-                    
-                  
-                </LocalizationProvider>
-
-                </Grid>
-              
-
+                
+              </LocalizationProvider>
+  
               </Grid>
-            </CardContent>
-            <Divider />
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                p: 2
-              }}
-            >
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handleSubmit}
+  
+  
+              <Grid
+                item
+                md={6}
+                xs={12}
               >
-                Update Event
-              </Button>
-            </Box>
-          </Card>
+  
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              
+                <DatePicker
+                  label="Application Deadline Date"
+                  name='application_deadline'
+                  value={values.application_deadline}
+                  minDate={new Date()}
+                  onChange={handleDeadlineDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                
+              </LocalizationProvider>
+  
+              </Grid>
+                    
+          </Grid>
+          
+          </CardContent>
+          <Divider />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              p: 2
+            }}
+          >
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleSubmit}
+            >
+              Edit Event
+            </Button>
+          </Box>
+        </Card>
       </form>
 
       )

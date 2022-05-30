@@ -76,7 +76,6 @@ const AccountProfileDetails = (props) => {
     // event.preventDefault();
     console.log('Submit: ', values);
     props.updateaccount(user.id,values);
-    navigate('/');
   };
 
   const handleMoreChange = (event) => {

@@ -17,6 +17,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
+import { useParams  } from 'react-router-dom';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -28,67 +29,33 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
-import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
+
 import { getApplicants } from '../../../Business Layer/thunks/applicant/applicant.thunk';
-import { NavigateBefore } from '@material-ui/icons';
-import DetailsModal from '../scout/modal';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-const AddNewButton = () => {
-
- 
-  
-  
-  return (
-    
- 
-    <Link to='/addEvent' style={{ textDecoration: 'none' }}>
-    <Button
-    startIcon={<AddIcon />}
-    color="primary"
-    fullWidth
-    variant="contained"
-  >
-    Add New Event
-  </Button>
-    
-    </Link>
-
-    
-    
-   )
-}
-
-
-
-const EventsTable = function (props) {
+const ApplicantsTable = function (props) {
   const [open, setOpen] = React.useState(false);
   let navigate = useNavigate()
+  let { id } = useParams();
 
   useEffect(() => {
 
-    
-    props.getevents();  
-  
-    console.log('Woooo', props.events.events);
+    props.getapplicants(id)
+    console.log('Woooo', props.applicants.applicants);
     
   }, []);
 
-  // const {loading, events, error} = useSelector(state => state.events || {})
+  
 
   useEffect(() => {
 
     console.log('Component Will Change');
     
     
-  }, [props.events.event]);
+  }, [props.applicants]);
   
 
-  // const {loading, events, error} = useSelector(state => state.events || {})
-
   function loadedShow(){
-    if (props.events.error === 'Network Error') {
+    if (props.applicants === 'Network Error') {
       return <div style={{textAlign: 'center'}}>
       
       <Typography
@@ -102,7 +69,7 @@ const EventsTable = function (props) {
     </div>
         
       }
-    else if (props.events.error) {
+    else if (props.applicants.error) {
       return <div style={{textAlign: 'center'}}>
       
       <Typography
@@ -110,13 +77,13 @@ const EventsTable = function (props) {
         gutterBottom
         variant="overline"
       >
-        {props.events.error}
+        {props.applicants.error}
       </Typography>
         
     </div>
         
       }
-    else if (props.events.eventsLoading) {
+    else if (props.applicants.applicantsLoading) {
       return <div style={{textAlign: 'center'}}>
       
         <CircularProgress color="inherit" size={25} />
@@ -124,7 +91,7 @@ const EventsTable = function (props) {
     </div>
       // <React.Fragment justifyContent="flex-end"><CircularProgress color="inherit" size={30} /></React.Fragment>
     }
-  else if (props.events.events) {
+  else if (props.applicants.applicants) {
     return (
       <>
       <Table>
@@ -154,70 +121,70 @@ const EventsTable = function (props) {
     
    
     <TableBody>
-    {props.events && Array.from(props.events.events).map((event) => (
+    {props.applicants && Array.from(props.applicants.applicants).map((applicant) => (
       <TableRow
      
         hover
-        {...console.log('EvenTable.jsx: event', event)}
-        key={event.id}
+        {...console.log('ApplicanTable.jsx: applicant', applicant)}
+        key={applicant[0].id}
       >
         <TableCell
 
           onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
+            navigate(`/applicantDetails/${applicant.id}`)
           }}
         
         >
-          {event.id}
+          {applicant.id}
         </TableCell>
         {/* ========================= */}
 
         <TableCell
 
           onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
+            navigate(`/applicantDetails/${applicant.id}`)
           }}
 
           >
-          {event.starting_date}
+          {applicant.starting_date}
         </TableCell>
 
         <TableCell
 
           onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
+            navigate(`/applicantDetails/${applicant.id}`)
           }}
 
           >
-          {event.starting_date}
+          {applicant.starting_date}
         </TableCell>
 
         <TableCell
 
           onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
+            navigate(`/applicantDetails/${applicant.id}`)
           }}
 
           >
             
-          {event.description}
+          {applicant.description}
         </TableCell>
 
         {/* ================================== */}
 
         <TableCell align='center'>
           <SeverityPill
-            color={(event.required_positions === 'delivered' && 'success')
-            || (event.required_positions === 'refunded' && 'error')
+            color={(applicant.required_positions === 'delivered' && 'success')
+            || (applicant.required_positions === 'refunded' && 'error')
             || 'warning'}
           >
-            {event.required_positions}
+            {applicant.required_positions}
           </SeverityPill>
         </TableCell>
 
         {/* ============================= */}
          <TableCell align='center'>
-          <Button onClick={() => navigate(`/editEvent/${event.id}`)}>
+          <Button onClick={() => navigate(`/editApplicant/${applicant.id}`)}>
         
          
             <EditRoundedIcon color='secondary'/>
@@ -228,7 +195,7 @@ const EventsTable = function (props) {
         </TableCell> 
 
         {/* <TableCell>
-          {format(event.deadline, 'dd/MM/yyyy')}
+          {format(applicant.deadline, 'dd/MM/yyyy')}
         </TableCell> */}
         
       </TableRow>
@@ -236,22 +203,20 @@ const EventsTable = function (props) {
   </TableBody>
   </Table>
 
-  {open && <DetailsModal />}
+
   </>
   )
-  }
-  // else if (props.events.error) {
-  //   return <React.Fragment>{props.events.error}</React.Fragment>
-  // }
+  } 
  
-  }    
+ 
+  }     
 
   
 
       return(
-        // <Card {...props}>
+  
         <Card>
-          <CardHeader title="Events" action={<AddNewButton/>}/>
+          
           <PerfectScrollbar>
             <Box sx={{ minWidth: 800 }}>
             {loadedShow()}
@@ -264,14 +229,7 @@ const EventsTable = function (props) {
               p: 2
             }}
           >
-            {/* <Button
-              color="primary"
-              endIcon={<ArrowRightIcon fontSize="small" />}
-              size="small"
-              variant="text"
-            >
-              View all
-            </Button> */}
+           
           </Box>
         </Card>
         )
@@ -280,19 +238,18 @@ const EventsTable = function (props) {
    
 const mapStateToProps = state => {
   return {
-    events: state.events
+   applicants: state.applicants,
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getevents: () => dispatch(getEvents()),
-    
+    getapplicants: (eventId) => dispatch(getApplicants(eventId))
 
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicantsTable);
 
 
 

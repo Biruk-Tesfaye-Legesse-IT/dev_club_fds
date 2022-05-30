@@ -67,12 +67,12 @@ const handleSubmit = () => {
     const file = document.getElementById('file').files[0];
     var formData = new FormData();
     formData.append('profile_picture', file);
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', `http://localhost:8000/api/clubs/${user.id}/`);
-    xhr.send(formData);
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('PATCH', `http://localhost:8000/api/clubs/${user.id}/`);
+    // xhr.send(formData);
 
     console.log(formData.get('profile_picture'));
-    props.updateaccount(user.id, {});
+    props.updateaccount(user.id, formData);
   // const file = e.target.files[0];
   // const reader = new FileReader();
   // reader.readAsDataURL(file);
@@ -144,8 +144,7 @@ const handleSubmit = () => {
                   transform: 'translate(-50%, -50%)'
                 }}
                 onClick={() => console.log('clicked')}
-                />
-              
+                />  
             }
           >
 

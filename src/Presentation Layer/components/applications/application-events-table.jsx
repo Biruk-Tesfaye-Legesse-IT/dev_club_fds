@@ -30,45 +30,15 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { getApplicants } from '../../../Business Layer/thunks/applicant/applicant.thunk';
-import { NavigateBefore } from '@material-ui/icons';
-import DetailsModal from '../scout/modal';
-
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
-const AddNewButton = () => {
-
- 
-  
-  
-  return (
-    
- 
-    <Link to='/addEvent' style={{ textDecoration: 'none' }}>
-    <Button
-    startIcon={<AddIcon />}
-    color="primary"
-    fullWidth
-    variant="contained"
-  >
-    Add New Event
-  </Button>
-    
-    </Link>
-
-    
-    
-   )
-}
 
 
-
-const EventsTable = function (props) {
+const ApplicationEventsTable = function (props) {
   const [open, setOpen] = React.useState(false);
   let navigate = useNavigate()
 
   useEffect(() => {
 
-    
+    props.getApplicants(1)
     props.getevents();  
   
     console.log('Woooo', props.events.events);
@@ -134,20 +104,21 @@ const EventsTable = function (props) {
             ID
           </TableCell>
           <TableCell>
-            Starting Date
-          </TableCell>
-          <TableCell>
-            Application Deadline
-          </TableCell>
-          <TableCell >
             Description
           </TableCell>
-          <TableCell align='center'>
-            Required Position
+          <TableCell>
+            Applicants
           </TableCell>
-          <TableCell align='center'>
-            Actions
+          <TableCell>
+            Candidates  
           </TableCell>
+          <TableCell>
+            Accepted Applicants
+          </TableCell>
+          <TableCell>
+            Close Event
+          </TableCell>
+         
         </TableRow>
       </TableHead>
       
@@ -161,88 +132,87 @@ const EventsTable = function (props) {
         {...console.log('EvenTable.jsx: event', event)}
         key={event.id}
       >
-        <TableCell
-
-          onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
-          }}
-        
-        >
+        <TableCell>
           {event.id}
         </TableCell>
         {/* ========================= */}
 
         <TableCell
-
-          onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
-          }}
-
           >
-          {event.starting_date}
-        </TableCell>
-
-        <TableCell
-
-          onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
-          }}
-
-          >
-          {event.starting_date}
-        </TableCell>
-
-        <TableCell
-
-          onClick={() => {
-            navigate(`/eventDetails/${event.id}`)
-          }}
-
-          >
-            
           {event.description}
+        </TableCell>
+
+        <TableCell
+
+         
+
+          >
+        <Button
+             onClick={() => {
+                navigate(`/applicants/${event.id}`)
+              }}
+        >
+            <h4> 
+                Manage {event.applicants.length} Applicant(s)
+                </h4>
+            
+            </Button>
+         
+        </TableCell>
+
+        <TableCell>
+            
+        <Button
+             onClick={() => {
+                navigate(`/candidates/${event.id}`)
+              }}
+        >
+            <h4> 
+                Manage {event.candidates.length} Candidates(s)
+                </h4>
+            
+            </Button>
         </TableCell>
 
         {/* ================================== */}
 
-        <TableCell align='center'>
-          <SeverityPill
-            color={(event.required_positions === 'delivered' && 'success')
-            || (event.required_positions === 'refunded' && 'error')
-            || 'warning'}
-          >
-            {event.required_positions}
-          </SeverityPill>
+        <TableCell>
+        <Button
+             onClick={() => {
+                navigate(`/applicants/${event.id}`)
+              }}
+        >
+            <h4> 
+                View {event.accepted_applicants.length} Accepted Applicant(s)
+                </h4>
+            
+            </Button>
         </TableCell>
 
         {/* ============================= */}
-         <TableCell align='center'>
-          <Button onClick={() => navigate(`/editEvent/${event.id}`)}>
         
-         
-            <EditRoundedIcon color='secondary'/>
-          </Button>
-          <Button>
-            <DeleteRounded color='secondary'/>
-          </Button>
-        </TableCell> 
-
-        {/* <TableCell>
-          {format(event.deadline, 'dd/MM/yyyy')}
-        </TableCell> */}
+        <TableCell>
+          <SeverityPill
+            color='secondary'
+            onClick={() => {
+                navigate(`/applicants/${event.id}`)
+              }}
+          >
+            Close Event
+          </SeverityPill>
+        </TableCell>
+       
         
       </TableRow>
     ))}
   </TableBody>
   </Table>
 
-  {open && <DetailsModal />}
+  
   </>
   )
   }
-  // else if (props.events.error) {
-  //   return <React.Fragment>{props.events.error}</React.Fragment>
-  // }
+ 
  
   }    
 
@@ -251,7 +221,7 @@ const EventsTable = function (props) {
       return(
         // <Card {...props}>
         <Card>
-          <CardHeader title="Events" action={<AddNewButton/>}/>
+          {/* <CardHeader title="Events" action={<AddNewButton/>}/> */}
           <PerfectScrollbar>
             <Box sx={{ minWidth: 800 }}>
             {loadedShow()}
@@ -264,14 +234,7 @@ const EventsTable = function (props) {
               p: 2
             }}
           >
-            {/* <Button
-              color="primary"
-              endIcon={<ArrowRightIcon fontSize="small" />}
-              size="small"
-              variant="text"
-            >
-              View all
-            </Button> */}
+         
           </Box>
         </Card>
         )
@@ -287,12 +250,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getevents: () => dispatch(getEvents()),
-    
+    getApplicants: (eventId) => dispatch(getApplicants(eventId))
 
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationEventsTable);
 
 
 
