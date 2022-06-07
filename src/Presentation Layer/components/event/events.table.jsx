@@ -28,17 +28,10 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
-import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
-import { getApplicants } from '../../../Business Layer/thunks/applicant/applicant.thunk';
-import { NavigateBefore } from '@material-ui/icons';
-import DetailsModal from '../scout/modal';
-
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { getEvents, deleteEvent, getEvent } from "../../../Business Layer/thunks/event/events.thunk";
+import { NestCamWiredStandTwoTone } from '@mui/icons-material';
 
 const AddNewButton = () => {
-
- 
-  
   
   return (
     
@@ -189,7 +182,7 @@ const EventsTable = function (props) {
           }}
 
           >
-          {event.starting_date}
+          {event.application_deadline}
         </TableCell>
 
         <TableCell
@@ -217,32 +210,30 @@ const EventsTable = function (props) {
 
         {/* ============================= */}
          <TableCell align='center'>
-          <Button onClick={() => navigate(`/editEvent/${event.id}`)}>
+          <Button onClick={() => {
+            navigate(`/editEvent/${event.id}`)
+            props.getevent(event.id)
+            }}>
         
          
             <EditRoundedIcon color='secondary'/>
           </Button>
-          <Button>
+          <Button onClick={() => {
+            props.deleteevent(event.id)
+            window.location.reload()
+          }}>
             <DeleteRounded color='secondary'/>
           </Button>
         </TableCell> 
-
-        {/* <TableCell>
-          {format(event.deadline, 'dd/MM/yyyy')}
-        </TableCell> */}
         
       </TableRow>
     ))}
   </TableBody>
   </Table>
-
-  {open && <DetailsModal />}
   </>
   )
   }
-  // else if (props.events.error) {
-  //   return <React.Fragment>{props.events.error}</React.Fragment>
-  // }
+
  
   }    
 
@@ -287,6 +278,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getevents: () => dispatch(getEvents()),
+    getevent: (id) => dispatch(getEvent(id)),
+    deleteevent: (id) => dispatch(deleteEvent(id))
     
 
   };

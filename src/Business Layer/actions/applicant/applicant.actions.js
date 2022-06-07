@@ -34,7 +34,7 @@ const applicantLoadingError = (errorMessage) => ({
 
 // APPROVE AN APPLICANT 
 const applicantApproving = () => {
-    return { type: applicantActionTypes.APPLICANT_APPROVING }
+    return { type: applicantActionTypes.APPLICANTS_APPROVING }
 }
 
 const applicantApproved = (applicant) => ({

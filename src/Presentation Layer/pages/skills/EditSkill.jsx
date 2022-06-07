@@ -17,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 export const EditSkill= (props) => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   
   return (
     <>
@@ -32,9 +32,7 @@ export const EditSkill= (props) => {
             width: '100%'
           }}
         >
-        
         <>
-
             <Box
             component="main"
             sx={{

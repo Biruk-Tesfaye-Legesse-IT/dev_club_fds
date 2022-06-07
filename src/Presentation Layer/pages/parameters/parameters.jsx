@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import ScoutDetailComponent from '../../components/scout/scout-details';
+import ParametersTable from '../../components/parameter/parameters-table';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -17,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 const Parameters= (props) => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
 
 
@@ -42,19 +42,19 @@ const Parameters= (props) => {
             component="main"
             sx={{
                 flexGrow: 1,
-                py: 8
+                py: 0
             }}
             >
             <Container maxWidth="lg">
-                <Typography
+                {/* <Typography
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Scout Details
-                </Typography>
+               
+                </Typography> */}
                 <Grid
                 container
-                spacing={3}
+                spacing={1}
                 >
                 
                 <Grid
@@ -63,7 +63,7 @@ const Parameters= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <ScoutDetailComponent />
+                    <ParametersTable />
                 </Grid>
                 </Grid>
             </Container>

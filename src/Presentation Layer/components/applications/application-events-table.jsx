@@ -28,7 +28,7 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
-import { getEvents } from "../../../Business Layer/thunks/event/events.thunk";
+import { getEvents, getEvent } from "../../../Business Layer/thunks/event/events.thunk";
 import { getApplicants } from '../../../Business Layer/thunks/applicant/applicant.thunk';
 
 
@@ -38,7 +38,7 @@ const ApplicationEventsTable = function (props) {
 
   useEffect(() => {
 
-    props.getApplicants(1)
+    
     props.getevents();  
   
     console.log('Woooo', props.events.events);
@@ -149,12 +149,13 @@ const ApplicationEventsTable = function (props) {
           >
         <Button
              onClick={() => {
+              //  props.getapplicants(event.id);
                 navigate(`/applicants/${event.id}`)
               }}
         >
-            <h4> 
+             
                 Manage {event.applicants.length} Applicant(s)
-                </h4>
+              
             
             </Button>
          
@@ -167,9 +168,9 @@ const ApplicationEventsTable = function (props) {
                 navigate(`/candidates/${event.id}`)
               }}
         >
-            <h4> 
+            
                 Manage {event.candidates.length} Candidates(s)
-                </h4>
+               
             
             </Button>
         </TableCell>
@@ -179,12 +180,13 @@ const ApplicationEventsTable = function (props) {
         <TableCell>
         <Button
              onClick={() => {
+                props.getapplicants(event.id)
                 navigate(`/applicants/${event.id}`)
               }}
         >
-            <h4> 
+          
                 View {event.accepted_applicants.length} Accepted Applicant(s)
-                </h4>
+           
             
             </Button>
         </TableCell>
@@ -195,7 +197,9 @@ const ApplicationEventsTable = function (props) {
           <SeverityPill
             color='secondary'
             onClick={() => {
+                
                 navigate(`/applicants/${event.id}`)
+                
               }}
           >
             Close Event
@@ -250,7 +254,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getevents: () => dispatch(getEvents()),
-    getApplicants: (eventId) => dispatch(getApplicants(eventId))
+    getevent: (id) => dispatch(getEvent(id)),
+    getapplicants: (eventId) => dispatch(getApplicants(eventId))
 
   };
 }

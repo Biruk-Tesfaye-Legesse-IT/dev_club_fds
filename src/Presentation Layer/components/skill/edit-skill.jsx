@@ -18,27 +18,44 @@ import Stack from '@mui/material/Stack';
 
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { getScout, getScouts, updateScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
+import { getSkill, getSkills, updateSkill } from '../../../Business Layer/thunks/skill/skills.thunk';
 import { connect } from 'react-redux';
 import { format } from 'date-fns'
 import { useSelector } from 'react-redux';
 
 
 
-const gender_options = [
+const weight_options = [
   {
-    value: 'MALE',
-    label: 'Male'
+    value: '0',
+    label: 'None'
   },
   {
-    value: 'FEMALE',
-    label: 'Female'
+    value: '1',
+    label: 'Very Low'
+  },
+  {
+    value: '2',
+    label: 'Low'
+  },
+  {
+    value: '3',
+    label: 'Moderate'
+  },
+  {
+    value: '4',
+    label: 'High'
+  },
+  {
+    value: '5',
+    label: 'Very High'
   },
 ];
 
 
-
 const EditSkillComponent = function (props) {
+
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
     let { id } = useParams();
 
@@ -46,37 +63,32 @@ const EditSkillComponent = function (props) {
 
  
     useEffect(() => {    
-      props.getscout(id);     
+      props.getskill(id);     
     }, []);
 
     
   
-  const [values, setValues] = useState({
-    username: 'asawhite',
-    password: '1234',
-    first_name: 'asd',
-    last_name: 'asd',
-    phone_number: 'dsa',
-    address: 'sad',
-    // type: "SCOUT",
-    email: 'biruk@gmail.com', // This is a must
-    more: {
-      dob: format(new Date(), 'yyyy-MM-dd'),
-      gender: 'MALE',
-      is_assigned: false
-    }
-  });
+    const [values, setValues] = useState({
+      name: '',
+      description: '',
+      weight_for_GK: 1,
+      weight_for_DEF: 2,
+      weight_for_MID: 5,
+      weight_for_STR: 3,
+      club: user.id
+    });
+   
  
 
   console.log('ValuesBefore', values);
 
   useEffect(() => {
         
-    if (props.scouts.scout) {
-      setValues(props.scouts.scout);
+    if (props.skills.skill) {
+      setValues(props.skills.skill);
     }
    
-  }, [props.scouts.scout]);
+  }, [props.skills.skill]);
 
 
   const handleChange = (e) => {
@@ -90,22 +102,10 @@ const EditSkillComponent = function (props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Submit: ', values);
-    props.updatescout(values);
-    props.getscouts();
-    navigate('/scouts');
+    props.updateskill(id, values);
+    props.getskills();
+    navigate('/skills');
   };
-
-  const handleBirthDateChange = (newDate) => {
-    setValues({
-      ...values,
-      more: {
-        ...values.more,
-        dob: format(newDate, 'yyyy-MM-dd'),
-      }
-    });
-  };
-
-
 
 
   return (
@@ -115,12 +115,10 @@ const EditSkillComponent = function (props) {
       {...props}
     >
       <Card>
-        {/* <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        /> */}
         <Divider />
         <CardContent>
+
+
           <Grid
             container
             spacing={3}
@@ -128,146 +126,42 @@ const EditSkillComponent = function (props) {
 
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
                 fullWidth
+                helperText="Please specify the name of the skill"
+                label="Name"
+                name="name"
+                onChange={handleChange}
+                required
                
-                label="User name"
-                name="username"
-                disabled
-                required
-                value={values.username}
+                value={values.name}
                 variant="outlined"
               />
             </Grid>
-
-            {/* <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-              
-                label="Password"
-                name="password"
-                type="password"
-                onChange={handleChange}
-                required
-                value={values.password}
-                variant="outlined"
-              /> */}
-
-              {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                <OutlinedInput
-                  name='password'
-                  id="outlined-adornment-password"
-                  type={values.showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  onChange={handleChange('password')}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                    />
-              </FormControl> */}
-              
-            {/* </Grid> */}
+         
 
             <Grid
               item
-              md={6}
+              md={12}
               xs={12}
             >
               <TextField
                 fullWidth
-                // helperText="Please specify the first name"
-                label="First name"
-                name="first_name"
-                disabled
+                helperText="Describe the skill briefly"
+                label="Description"
+                name="description"
                 onChange={handleChange}
                 required
-                value={values.first_name}
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Last name"
-                name="last_name"
-                disabled
-                required
-                value={values.last_name}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-
-                fullWidth
-                label="Phone Number"
-                name="phone_number"
-                onChange={handleChange}
-                type="tel"
-                value={values.phone_number}
-                variant="outlined"
                 
-              />
-            </Grid>
-
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Address"
-                name="address"
-                disabled
-                required
-                value={values.address}
+                value={values.description}
                 variant="outlined"
               />
             </Grid>
 
+      
             <Grid
               item
               md={6}
@@ -275,16 +169,99 @@ const EditSkillComponent = function (props) {
             >
               <TextField
                 fullWidth
-                label="Gender"
-                name="gender"
-                disabled
+                label="Weight for Goalkeeper"
+                name="weight_for_GK"
+                onChange={handleChange}
                 required
                 select
                 SelectProps={{ native: true }}
-                value={values.more.gender}
+                value={values.weight_for_GK}
                 variant="outlined"
               >
-                {gender_options.map((option) => (
+                {weight_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Weight for Defender"
+                name="weight_for_DEF"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.weight_for_DEF}
+                variant="outlined"
+              >
+                {weight_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Weight for Midfielder"
+                name="weight_for_MID"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.weight_for_MID}
+                variant="outlined"
+              >
+                {weight_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Weight for Striker"
+                name="weight_for_STR"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.weight_for_STR}
+                variant="outlined"
+              >
+                {weight_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -296,29 +273,11 @@ const EditSkillComponent = function (props) {
             </Grid>
 
            
+
+           
             
 
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                
-              <DatePicker
-                label="Birth Date"
-                name='dob'
-                value={values.more.dob}
-                minDate={new Date()}
-                disabled
-                onChange={handleBirthDateChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              
-            </LocalizationProvider>
-
-            </Grid>
+            
            
 
           </Grid>
@@ -336,7 +295,7 @@ const EditSkillComponent = function (props) {
             variant="contained"
             onClick= {handleSubmit}
           >
-            Hire Scout
+            Edit Skill
           </Button>
         </Box>
       </Card>
@@ -347,15 +306,16 @@ const EditSkillComponent = function (props) {
 
 const mapStateToProps = state => {
   return {
-    scouts: state.scouts
+    skills: state.skills
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getscout: (id) => dispatch(getScout(id)),
-    updatescout: (id, data) => dispatch(updateScout(id, data)),
-    getscouts: () => dispatch(getScouts()),
+    getskill: (id) => dispatch(getSkill(id)),
+    updateskill: (id, data) => dispatch(updateSkill(id, data)),
+    getskills: () => dispatch(getSkills()),
+   
 
   };
 }

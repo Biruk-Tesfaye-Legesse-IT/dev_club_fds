@@ -18,6 +18,17 @@ class EventDataService {
     deleteEvent(id) {
         return http.delete(`${EVENT_ENDPOINT}${id}`);
     }
+
+    getScoutsArray(eventID) {
+        return http.get(`${EVENT_ENDPOINT}${eventID}/`);
+    }
+
+    assignScout(id, data) {
+        return http.patch(`${EVENT_ENDPOINT}${id}/`, {
+            scouts: data
+        });
+    }
+
     deleteAllEvents() {
         return http.delete(`${EVENT_ENDPOINT}`);
     }
@@ -28,7 +39,7 @@ class EventDataService {
         return http.post(`${API_ENDPOINT}build_teams/, ${eventId}`);
     }
     checkFormation(id){
-        return http.get(`${EVENT_ENDPOINT}/check-formation/${id}/`);
+        return http.get(`${EVENT_ENDPOINT}check_formation/${id}/`);
     }
     closeEvent(id) {
         return http.post(`${EVENT_ENDPOINT}${id}/close`);

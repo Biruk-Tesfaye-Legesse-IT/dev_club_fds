@@ -1,4 +1,5 @@
 import {useEffect, useLayoutEffect} from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -23,14 +24,23 @@ import {
   List,
   Avatar,
   useTheme,
-  CardHeader
+  CardHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Checkbox,
 } from '@mui/material';
 
 import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone';
 import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
 import MessageTwoToneIcon from '@mui/icons-material/MessageTwoTone';
+import { SeverityPill } from '../severity-pill';
+import DeleteRounded from '@mui/icons-material/DeleteRounded';
 
-import { getEvent } from "../../../Business Layer/thunks/event/events.thunk";
+import { getEvent, assignScout } from "../../../Business Layer/thunks/event/events.thunk";
+import { getScouts } from "../../../Business Layer/thunks/scout/scouts.thunk";
 
 
 // const useStyles = makeStyles({
@@ -55,7 +65,22 @@ const EventDetailComponent = function(props) {
 
   let { id } = useParams();
 
+  let { event, scouts } = props;
+
+  // let usableEvent = event.event;
+
+  
+
+  let selectedScouts = [];
+
+  
+
+  console.log('brazaaa', selectedScouts);  
+
+  const [checked, setChecked] = React.useState(true);
+
   useEffect(() => {
+    props.getscouts();
     props.getevent(id); 
   }, []); 
 
@@ -70,6 +95,10 @@ const EventDetailComponent = function(props) {
 
     else if (props.event.event) {
       let event = props.event.event;
+      var OGScoutsID = event.scouts;
+      OGScoutsID.forEach(function(scoutID) {
+        selectedScouts.push(scoutID);
+      });
       return(
         <div>
          {/* <Card className={classes.root}> */}
@@ -223,46 +252,135 @@ const EventDetailComponent = function(props) {
         xs={12}
     >
       <Card>
-        <CardHeader title = 'Me' />
+        <CardHeader 
+          title = 'Select Scouts to Assign' 
+          action={
+
+            <Button
+    // startIcon={<AddIcon />}
+    color="primary"
+    fullWidth
+    variant="contained"
+    onClick={() => {
+      props.assignscouts(id, selectedScouts);}}
+  >
+    Assign Scouts
+  </Button>
+          }
+          />
          
        
      <CardContent>
-       <List sx={{ px: 2}}>
-        
-         <ListItem sx={{ py: 1.5 }}>
-           <ListItemText
-             primary="Hired On"
-             primaryTypographyProps={{ variant: 'subtitle1' }}
-           />
-           <Typography variant="subtitle1" color="text.primary">
-             22 January 2021
-           </Typography>
-         </ListItem>
-         <Divider component="li" />
-         <ListItem sx={{ py: 1.5 }}>
-           <ListItemText
-             primary="Status"
-             primaryTypographyProps={{ variant: 'subtitle1' }}
-           />
-           <Typography variant="subtitle1" color="text.primary">
-             Assigned.
-           </Typography>
-         </ListItem>
-         <Divider component="li" />
-         <ListItem sx={{ py: 1.5 }}>
-           <ListItemText
-             primary="Tasks"
-             primaryTypographyProps={{ variant: 'subtitle1' }}
-           />
-           <Typography
-             variant="subtitle1"
-             color="text.primary"
-             fontWeight="bold"
-           >
-             67 active
-           </Typography>
-         </ListItem>
-       </List>
+     <>
+      <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>
+            ID
+          </TableCell>
+          <TableCell>
+            Full Name
+          </TableCell>
+          {/* <TableCell>
+            Gender
+          </TableCell> */}
+          <TableCell>
+           
+            Phone Number
+             
+          </TableCell>
+          <TableCell>
+            Assigned
+          </TableCell>
+          <TableCell>
+            
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      
+    
+   
+    <TableBody>
+    {props.scouts && Array.from(props.scouts.scouts).map((scout) => (
+      <TableRow
+        // onClick={() => {
+        //   console.log(scout.name);
+        // }}
+        // hover
+        // {...console.log('ScouTable.jsx: scout', scout)}
+        // key={scout.id}
+      >
+        <TableCell
+          // onClick={() => navigate(`/scoutDetails/${scout.id}`)}
+        >
+          <Checkbox
+            defaultChecked = {selectedScouts.includes(scout.id)}
+            // disabled = {selectedScouts.includes(scout.id)}
+            onChange={() => {
+              
+              
+              if (selectedScouts.indexOf(scout.id) !== -1) {
+                  selectedScouts.splice(selectedScouts.indexOf(scout.id), 1);
+                  console.log('You unselected',scout.id, 'so', selectedScouts);
+                  // setChecked(false);
+              } else {
+                selectedScouts.push(scout.id);
+                console.log('You selected',scout.id, 'so', selectedScouts);
+                // setChecked(true);
+              } 
+             
+            }}
+            
+          />
+        </TableCell>
+        {/* ========================= */}
+
+        <TableCell
+          // onClick={() => navigate(`/scoutDetails/${scout.id}`)}
+        >
+          {`${scout.first_name} ${scout.last_name}`}
+          
+        </TableCell>
+
+        {/* <TableCell
+          // onClick={() => navigate(`/scoutDetails/${scout.id}`)}
+        >
+          {scout.more.gender ? 'M' : 'F'}
+        </TableCell> */}
+
+        <TableCell
+          // onClick={() => navigate(`/scoutDetails/${scout.id}`)}
+        >
+          {scout.phone_number}
+        </TableCell>
+
+        <TableCell
+          // onClick={() => navigate(`/scoutDetails/${scout.id}`)}
+        >
+          <SeverityPill
+            color={(scout.more.is_assigned === true && 'success')
+            || (scout.more.is_assigned === false && 'error')
+            || 'warning'}
+          >
+            {scout.more.is_assigned ? 'Yes' : 'No'}
+          </SeverityPill>
+        </TableCell>
+
+        {/* ============================= */}
+         {/* <TableCell>
+          
+            <Button onClick={() => { props.assignscout(id, scout.id) }}>
+              Assign 
+          </Button>
+        </TableCell>  */}
+
+
+      </TableRow>
+    ))}
+  </TableBody>
+  </Table>
+   
+  </>
      </CardContent>
      </Card>
 
@@ -342,13 +460,17 @@ const EventDetailComponent = function(props) {
 
 const mapStateToProps = state => {
   return {
-    event: state.events
+    event: state.events,
+    scouts: state.scouts
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     getevent: (id) => dispatch(getEvent(id)),
+    getscouts: () => dispatch(getScouts()),
+    assignscouts: (eventID, scoutID) => dispatch(assignScout(eventID, scoutID)),
+    // getParameters: () => dispatch(getParameters()),
 
     // getevents: () => dispatch(getEvent()),
 

@@ -17,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 export const EditScout= (props) => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   
   return (
     <>

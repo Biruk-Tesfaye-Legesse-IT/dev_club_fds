@@ -14,19 +14,19 @@ class SkillDataService {
     }
 
     updateSkill(id, data) {
-        return http.put(`${SKILL_ENDPOINT}${id}`, data);
+        return http.put(`${SKILL_ENDPOINT}${id}/`, data);
     }
 
     deleteSkill(id) {
-        return http.delete(`${SKILL_ENDPOINT}${id}`);
+        return http.delete(`${SKILL_ENDPOINT}${id}/`);
     }
 
     deleteAllSkills() {
-        return http.delete(`${SKILL_ENDPOINT}`);
+        return http.delete(`${SKILL_ENDPOINT}/`);
     }
     
     findSkillByTitle(title) {
-        return http.get(`${SKILL_ENDPOINT}?title=${title}`);
+        return http.get(`${SKILL_ENDPOINT}?title=${title}/`);
     }
 }
 export default new SkillDataService();

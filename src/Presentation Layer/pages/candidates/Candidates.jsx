@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import Navbar from '../../components/navbar';
 import { Sidebar } from '../../components/sidebar';
-import ScoutDetailComponent from '../../components/scout/scout-details';
+import CandidatesTable from '../../components/candidates/candidates-table';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -17,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 const Candidates= (props) => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
 
 
@@ -50,7 +50,7 @@ const Candidates= (props) => {
                 sx={{ mb: 3 }}
                 variant="h4"
                 >
-                Scout Details
+                Event Candidates
                 </Typography>
                 <Grid
                 container
@@ -63,7 +63,7 @@ const Candidates= (props) => {
                     md={12}
                     xs={12}
                 >
-                    <ScoutDetailComponent />
+                    <CandidatesTable />
                 </Grid>
                 </Grid>
             </Container>

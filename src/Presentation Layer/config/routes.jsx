@@ -1,6 +1,5 @@
 import { BrowserRouter as Router,Routes, Route, Navigate } from 'react-router-dom';
 
-
 import Account from '../pages/account/Account';
 
 import NotFound from '../pages/404/404';
@@ -23,13 +22,16 @@ import EditSkill from '../pages/skills/EditSkill';
 
 import Applications from '../pages/applications/Applications';
 import Applicants from '../pages/applicants/Applicants';
+import ApplicantDetails from '../pages/applicants/ApplicantDetails';
 import Candidates from '../pages/candidates/Candidates';
 import Accepteds from '../pages/accepteds/Accepteds';
 
-import Parameters from '../pages/parameters/parameters';
+import Parameters from '../pages/parameters/Parameters';
+import CreateNewParameter from '../pages/parameters/CreateNewParameter';
+import EditParameter from '../pages/parameters/EditParameter';
 
 import PrivateRoute from './routeGuard';
-
+import CandidateResults from '../pages/candidates/CandidateResults';
 
 function RoutedPages() {
     
@@ -58,7 +60,9 @@ function RoutedPages() {
                     {/* Application Routes */}
                     <Route exact path="/applicationEvents" element={<  Applications />} />               
                     <Route exact path="/applicants/:id" element={< Applicants />} />
+                    <Route exact path="/applicantDetails/:id" element={< ApplicantDetails />} />
                     <Route exact path="/candidates/:id" element={< Candidates />} />
+                    <Route exact path='/candidateResults/:id' element={<CandidateResults/>}/>
                     <Route exact path="/accepteds/:id" element={< Accepteds />} />
 
                     {/* Skill Routes */}
@@ -73,6 +77,8 @@ function RoutedPages() {
 
                     {/* Parameters Routes */}
                     <Route exact path="/parameters" element={< Parameters />} />
+                    <Route exact path="/addParameter" element={< CreateNewParameter />} />
+                    <Route exact path="/editParameter/:id" element={< EditParameter />} />
                 
                 </Route>
 

@@ -78,41 +78,86 @@ const eventDeleteError = (errorMessage) => ({
     payload: errorMessage,
 })
 
+//CLOSE EVENT
 
-// DELETE ALL EVENTS 
-const eventsDeleting = () => {
-    return { type: eventActionTypes.EVENTS_DELETING }
+const eventClosing = () => {
+    return { type: eventActionTypes.CLOSING_EVENT }
 }
 
-const eventsDeleted = (event) => ({
-    type: eventActionTypes.EVENTS_DELETED,
+const eventClosed = (event) => ({
+    type: eventActionTypes.EVENT_CLOSED,
     payload: event,
 })
 
-const eventsDeleteError = (errorMessage) => ({
-    type: eventActionTypes.EVENTS_DELETE_ERROR,
+const eventCloseError = (errorMessage) => ({
+    type: eventActionTypes.EVENT_CLOSE_ERROR,
+    payload: errorMessage,
+})
+
+//CHECK TEAM
+const checkingTeam = () => {
+    return { type: eventActionTypes.CHECKING_TEAM }
+}
+
+const teamChecked = (team) => ({
+    type: eventActionTypes.TEAM_CHECKED,
+    payload: team,
+})
+
+const teamCheckError = (errorMessage) => ({
+    type: eventActionTypes.TEAM_CHECK_ERROR,
+    payload: errorMessage,
+})
+
+//ASSIGN SCOUT
+
+const assigningScout = () => {
+    return { type: eventActionTypes.ASSIGNING_SCOUT }
+}
+
+const scoutAssigned = (scout) => ({
+    type: eventActionTypes.SCOUT_ASSIGNED,
+    payload: scout,
+})
+
+const scoutAssignError = (errorMessage) => ({
+    type: eventActionTypes.SCOUT_ASSIGN_ERROR,
+    payload: errorMessage,
+})
+
+// BUILD TEAM
+const teamBuilding = () => {
+    return { type: eventActionTypes.TEAM_BUILDING }
+}
+
+const teamBuilt = (team) => ({
+    type: eventActionTypes.TEAM_BUILT,
+})
+
+const teamBuildErrror = (errorMessage) => ({
+    type: eventActionTypes.TEAM_BUILD_ERROR,
     payload: errorMessage,
 })
 
 // DELETE ALL EVENTS 
-const eventsSearching = () => {
-    return { type: eventActionTypes.EVENTS_DELETING }
-}
+// const eventsSearching = () => {
+//     return { type: eventActionTypes.EVENTS_DELETING }
+// }
 
-const eventsSearchFound = (event) => ({
-    type: eventActionTypes.EVENTS_DELETED,
-    payload: event,
-})
+// const eventsSearchFound = (event) => ({
+//     type: eventActionTypes.EVENTS_DELETED,
+//     payload: event,
+// })
 
-const eventsSearchNotFound = (errorMessage) => ({
-    type: eventActionTypes.EVENTS_DELETE_ERROR,
-    payload: errorMessage,
-})
+// const eventsSearchNotFound = (errorMessage) => ({
+//     type: eventActionTypes.EVENTS_DELETE_ERROR,
+//     payload: errorMessage,
+// })
 
-const eventsSearchError = (errorMessage) => ({
-    type: eventActionTypes.EVENTS_DELETE_ERROR,
-    payload: errorMessage,
-})
+// const eventsSearchError = (errorMessage) => ({
+//     type: eventActionTypes.EVENTS_DELETE_ERROR,
+//     payload: errorMessage,
+// })
 
 
 export default {
@@ -134,5 +179,26 @@ export default {
 
     eventDeleting,
     eventDeleted,
-    eventDeleteError
+    eventDeleteError,
+
+    eventClosing,
+    eventClosed,
+    eventCloseError,
+
+    checkingTeam,
+    teamChecked,
+    teamCheckError,
+
+    teamBuilding,
+    teamBuilt,
+    teamBuildErrror,
+
+    assigningScout,
+    scoutAssigned,
+    scoutAssignError,
+
+    // eventsSearching,
+    // eventsSearchFound,
+    // eventsSearchNotFound,
+    // eventsSearchError,
 }

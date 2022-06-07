@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -18,8 +18,9 @@ import Stack from '@mui/material/Stack';
 import { format } from 'date-fns'
 
 
-import { createEvent } from "../../../Business Layer/thunks/event/events.thunk";
+import { createEvent, getEvents } from "../../../Business Layer/thunks/event/events.thunk";
 import { connect } from 'react-redux';
+import {useNavigate} from 'react-router-dom'
 
 
 const education_level_options = [
@@ -97,6 +98,9 @@ const gender_options = [
 
 
 const CreateEvent = function (props) {
+  let navigate = useNavigate();
+  
+
 
 
   
@@ -113,6 +117,7 @@ const CreateEvent = function (props) {
 
     club: '',
     scouts: [],
+    
   });
 
   const handleStartingDateChange = (newDate) => {
@@ -146,6 +151,7 @@ const CreateEvent = function (props) {
     setValues({
       ...values,
       [event.target.name]: event.target.value, 
+      scouts: [...values.scouts, event.target.value]
     });
     console.log(values);
   };
@@ -160,11 +166,15 @@ const CreateEvent = function (props) {
     console.log(values.date);
   };
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // console.log('Debug', values);
     console.log('Date', );
     props.createevent(values);
+    props.getevents();
+    navigate('/');
   };
 
 
@@ -400,6 +410,89 @@ const CreateEvent = function (props) {
             </LocalizationProvider>
 
             </Grid>
+
+            
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Head Scout"
+                name="scouts"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.scouts}
+                variant="outlined"
+              >
+                {education_level_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Supporting Scout 1"
+                name="scouts"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.scouts}
+                variant="outlined"
+              >
+                {education_level_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
+
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Supporting Scout 1"
+                name="scouts"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.scouts}
+                variant="outlined"
+              >
+                {education_level_options.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
                   
         </Grid>
         
@@ -434,6 +527,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     createevent: (data) => dispatch(createEvent(data)),
+    getevents: () => dispatch(getEvents())
   };
 }
 

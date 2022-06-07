@@ -23,10 +23,13 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { format } from 'date-fns'
 import Stack from '@mui/material/Stack';
+import validateSkill from '../../validation/skill/validateSkill';
 
 import { createSkill, getSkills } from '../../../Business Layer/thunks/skill/skills.thunk';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const gender_options = [
+const weight_options = [
   {
     value: '0',
     label: 'None'
@@ -83,17 +86,26 @@ const AddSkill = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Submit: ', values);
-    props.createskill(values);
-    props.getskills();
-    navigate('/skills');
+    if (validateSkill(values) === true) {
+      props.createskill(values)
+      props.getskills();
+      navigate('/skills');
+    } else{
+      console.log('Error: ', validateSkill(values));
+      toast.error(validateSkill(values).name);
+    }
   };
 
   return (
+    <>
+     <ToastContainer />
+    
     <form
       autoComplete="off"
       noValidate
       {...props}
     >
+      
       <Card>
         {/* <CardHeader
           subheader="The information can be edited"
@@ -162,7 +174,7 @@ const AddSkill = (props) => {
                 value={values.weight_for_GK}
                 variant="outlined"
               >
-                {gender_options.map((option) => (
+                {weight_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -189,7 +201,7 @@ const AddSkill = (props) => {
                 value={values.weight_for_DEF}
                 variant="outlined"
               >
-                {gender_options.map((option) => (
+                {weight_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -218,7 +230,7 @@ const AddSkill = (props) => {
                 value={values.weight_for_MID}
                 variant="outlined"
               >
-                {gender_options.map((option) => (
+                {weight_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -245,7 +257,7 @@ const AddSkill = (props) => {
                 value={values.weight_for_STR}
                 variant="outlined"
               >
-                {gender_options.map((option) => (
+                {weight_options.map((option) => (
                   <option
                     key={option.value}
                     value={option.value}
@@ -284,6 +296,7 @@ const AddSkill = (props) => {
         </Box>
       </Card>
     </form>
+    </>
   );
 };
 

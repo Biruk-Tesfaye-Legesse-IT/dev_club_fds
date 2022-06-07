@@ -17,7 +17,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 const Applications= (props) => {
   // const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
 
 
@@ -42,7 +42,7 @@ const Applications= (props) => {
             component="main"
             sx={{
                 flexGrow: 1,
-                py: 8
+                py: 6
             }}
             >
             <Container maxWidth="lg">

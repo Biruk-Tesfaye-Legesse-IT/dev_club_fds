@@ -39,7 +39,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getSkills, getSkill } from "../../../Business Layer/thunks/skill/skills.thunk";
+import { getSkills, getSkill, deleteSkill } from "../../../Business Layer/thunks/skill/skills.thunk";
 
 
 
@@ -78,17 +78,29 @@ const SkillsTable = function (props) {
 
   function Row (props) {
     const [open, setOpen] = React.useState(false);
-    const {skill} = props;
+    const {skill, deleteskill} = props;
     function handleDefault(){
       // console.log('joji', is_default)
       if (skill.is_default == false){
+        console.log('joji', props.skill)
         return (<TableCell align='left'>
-        <Button>
+        <Button onClick={() => navigate(`/editSkill/${props.skill.id}`)}>
       
        
           <EditRoundedIcon color='secondary'/>
         </Button>
-        <Button>
+        <Button onClick={() => {
+          deleteskill(props.skill.id)
+          toast.success('Skill deleted successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          window.location.reload();
+        }}>
           <DeleteRounded color='secondary'/>
         </Button>
       </TableCell> )
@@ -246,7 +258,6 @@ const SkillsTable = function (props) {
         <TableHead>
           <TableRow>
           
-            {/* <TableCell>ID</TableCell> */}
             <TableCell align="center">Name</TableCell>
             <TableCell align="left">Description</TableCell>
             <TableCell align="left">Actions</TableCell>
@@ -256,7 +267,7 @@ const SkillsTable = function (props) {
         </TableHead>
         <TableBody>
           {props.skills && Array.from(props.skills.skills).map((skill) => (
-            <Row key={skill.id} skill={skill} />
+            <Row key={skill.id} skill={skill} deleteskill={props.deleteskill}/>
           ))}
           
         </TableBody>
@@ -267,10 +278,7 @@ const SkillsTable = function (props) {
   </>
   )
   }
-  // else if (props.scouts.error) {
-  //   return <React.Fragment>{props.scouts.error}</React.Fragment>
-  // }
- 
+
   }    
 
   
@@ -307,6 +315,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getskills: () => dispatch(getSkills()),
     getskill: (id) => dispatch(getSkill(id)),
+    deleteskill: (id) => dispatch(deleteSkill(id))
   };
 }
 

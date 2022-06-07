@@ -1,36 +1,28 @@
 import React, { useEffect } from 'react';
 import { format } from 'date-fns';
-import { v4 as uuid } from 'uuid';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
+  Avatar,
   Box,
   Button,
   Card,
-  CardHeader,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip, 
   Typography,
-  Grid
+  Grid,
+  Divider
 } from '@mui/material';
+
 import { useParams  } from 'react-router-dom';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
-import AddIcon from '@mui/icons-material/Add';
-import { Link, useNavigate } from 'react-router-dom';
-
-import DeleteRounded from '@mui/icons-material/DeleteRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
-
-
-import { getApplicants } from '../../../Business Layer/thunks/applicant/applicant.thunk';
+import {useNavigate } from 'react-router-dom';
+import { getEvent, buildTeam  } from '../../../Business Layer/thunks/event/events.thunk';
+import { approveApplicant, getApplicants} from '../../../Business Layer/thunks/applicant/applicant.thunk';
 
 const ApplicantsTable = function (props) {
   const [open, setOpen] = React.useState(false);
@@ -38,24 +30,33 @@ const ApplicantsTable = function (props) {
   let { id } = useParams();
 
   useEffect(() => {
-
+    props.getevent(id);
     props.getapplicants(id)
-    console.log('Woooo', props.applicants.applicants);
-    
+    console.log('Woooo', props.applicants.applicants);  
   }, []);
 
-  
+  const { event } = useSelector(state => state.events || {})
+
+  const candidates = event.candidates;
+
+  const checkIfApproved = (applicantID) => {
+    console.log('applicantIDerrr', applicantID);
+    if (!candidates.includes(applicantID)) {
+      return true;
+    }
+    return false;
+  }
 
   useEffect(() => {
-
     console.log('Component Will Change');
     
-    
-  }, [props.applicants]);
+  }, [props.applicants.applicants
+   , event]);
   
 
   function loadedShow(){
-    if (props.applicants === 'Network Error') {
+    console.log('lolololololololololo', candidates)
+    if (props.applicants.error === 'Network Error') {
       return <div style={{textAlign: 'center'}}>
       
       <Typography
@@ -98,27 +99,25 @@ const ApplicantsTable = function (props) {
       <TableHead>
         <TableRow>
           <TableCell>
-            ID
+           DIP
           </TableCell>
           <TableCell>
-            Starting Date
+            Name
           </TableCell>
           <TableCell>
-            Application Deadline
+            Preferred Foot
           </TableCell>
           <TableCell >
-            Description
+            DOB
           </TableCell>
           <TableCell align='center'>
-            Required Position
+            Playing Position
           </TableCell>
           <TableCell align='center'>
-            Actions
+            Approve
           </TableCell>
         </TableRow>
       </TableHead>
-      
-    
    
     <TableBody>
     {props.applicants && Array.from(props.applicants.applicants).map((applicant) => (
@@ -126,7 +125,7 @@ const ApplicantsTable = function (props) {
      
         hover
         {...console.log('ApplicanTable.jsx: applicant', applicant)}
-        key={applicant[0].id}
+        key={applicant.id}
       >
         <TableCell
 
@@ -135,7 +134,7 @@ const ApplicantsTable = function (props) {
           }}
         
         >
-          {applicant.id}
+          <Avatar alt="Remy Sharp" src={applicant.profile_picture} />
         </TableCell>
         {/* ========================= */}
 
@@ -146,7 +145,7 @@ const ApplicantsTable = function (props) {
           }}
 
           >
-          {applicant.starting_date}
+          {applicant.first_name} {applicant.last_name}
         </TableCell>
 
         <TableCell
@@ -156,7 +155,7 @@ const ApplicantsTable = function (props) {
           }}
 
           >
-          {applicant.starting_date}
+          {(applicant.more.foot).toLowerCase()}
         </TableCell>
 
         <TableCell
@@ -167,7 +166,7 @@ const ApplicantsTable = function (props) {
 
           >
             
-          {applicant.description}
+          {applicant.more.dob ? format(new Date(applicant.more.dob), 'MM/dd/yyyy') : 'N/A'}
         </TableCell>
 
         {/* ================================== */}
@@ -178,33 +177,65 @@ const ApplicantsTable = function (props) {
             || (applicant.required_positions === 'refunded' && 'error')
             || 'warning'}
           >
-            {applicant.required_positions}
+            {applicant.more.playing_possition1}
           </SeverityPill>
         </TableCell>
 
+        {/* {
+            if (!(applicant.id in candidates)) {
+              return 
+           
+          </TableCell> 
+          } */}
+
+
         {/* ============================= */}
          <TableCell align='center'>
-          <Button onClick={() => navigate(`/editApplicant/${applicant.id}`)}>
-        
-         
-            <EditRoundedIcon color='secondary'/>
-          </Button>
-          <Button>
-            <DeleteRounded color='secondary'/>
-          </Button>
-        </TableCell> 
+           {console.log('HOWEEE', applicant.id)}
 
-        {/* <TableCell>
-          {format(applicant.deadline, 'dd/MM/yyyy')}
-        </TableCell> */}
+           {
+              checkIfApproved(applicant.id) ? <Button onClick={() => props.approveapplicant(id, applicant.id)}> Approve </Button> : <div>Approved</div>
+             
+             
+           }
+
+           {console.log(`checked that ${applicant.id} is in ${candidates}`)}
+          
+          </TableCell>
+
+          
         
       </TableRow>
+      
     ))}
+    
   </TableBody>
+  
   </Table>
-
+ 
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  p: 2
+                }}
+              >
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    props.buildteam(id)
+                  }}
+                >
+                  Build Team
+                </Button>
+              </Box>
+  
+  
 
   </>
+  
+  
   )
   } 
  
@@ -239,13 +270,16 @@ const ApplicantsTable = function (props) {
 const mapStateToProps = state => {
   return {
    applicants: state.applicants,
+   events: state.events
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getapplicants: (eventId) => dispatch(getApplicants(eventId))
-
+    getapplicants: (eventId) => dispatch(getApplicants(eventId)),
+    getevent: (id) => dispatch(getEvent(id)),
+    approveapplicant: (eventId, applicantId) => dispatch(approveApplicant(eventId, applicantId)),
+    buildteam: (eventId) => dispatch(buildTeam(eventId)),
   };
 }
 

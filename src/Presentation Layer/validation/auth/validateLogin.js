@@ -1,3 +1,12 @@
+function validateEmail(email) {
+    var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (email.match(validRegex)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function validatePassword(password) {
     // var validRegex = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$/
 
@@ -9,7 +18,7 @@ function validatePassword(password) {
         return false;
     }
 }
-export default validatePassword;
+
 
 // A#a01234
 
@@ -28,3 +37,7 @@ export default validatePassword;
 // Ensure string has two digits.
 // Ensure string has three lowercase letters.
 // Ensure string is of length 8.
+export {
+    validateEmail,
+    validatePassword
+}

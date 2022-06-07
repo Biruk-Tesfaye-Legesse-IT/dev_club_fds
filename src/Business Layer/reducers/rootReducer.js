@@ -7,6 +7,7 @@ import skillReducer from './skill/skill.reducer';
 import applicantsReducer from './applicant/applicant.reducer';
 import candidatesReducer from './candidate/candidate.reducer';
 import acceptedsReducer from './accepted/accepted.reducer';
+import parametersReducer from './parameter/parameter.reducer';
 
 
 
@@ -17,6 +18,7 @@ const rootReducer = function() {
         scouts: scoutsReducer,
         account: accountReducer,
         skills: skillReducer,
+        parameters: parametersReducer,
         applicants: applicantsReducer,
         candidates: candidatesReducer,
         accepteds: acceptedsReducer,

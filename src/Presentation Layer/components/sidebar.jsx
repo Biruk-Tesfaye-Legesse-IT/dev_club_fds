@@ -11,6 +11,7 @@ import LinearScaleIcon from '@mui/icons-material/LinearScale';
 import PeopleIcon from '@mui/icons-material/People';
 import ArticleIcon from '@mui/icons-material/Article';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import TimelineIcon from '@mui/icons-material/Timeline';
 const items = [
   {
     href: '/',
@@ -29,15 +30,21 @@ const items = [
     title: 'Scouts'
   },
   {
-    href: '/account',
-    icon: (<ManageAccountsRoundedIcon/>),
-    title: 'Account'
-  },
-  {
     href: '/skills',
     icon: (<LinearScaleIcon/>),
     title: 'Skills',
   },
+  {
+    href: '/parameters',
+    icon: (<TimelineIcon/>),
+    title: 'Parameters',
+  },
+  {
+    href: '/account',
+    icon: (<ManageAccountsRoundedIcon/>),
+    title: 'Account'
+  },
+ 
 
 
   // {
@@ -79,6 +86,8 @@ export const Sidebar = (props) => {
     defaultMatches: true,
     noSsr: false
   });
+
+  let user = JSON.parse(sessionStorage.getItem('user'));
 
   // useEffect(
   //   () => {
@@ -149,7 +158,7 @@ export const Sidebar = (props) => {
                 >
                   Club
                   {' '}
-                  : St. George F.C.
+                  : {user.more.club_name}
                 </Typography>
               </div>
               {/* <SelectorIcon

@@ -3,7 +3,7 @@ import applicantActionTypes from '../../actions/applicant/applicant.action.types
 const initialState = {
     applicants: [],
     applicant: {},
-    applicantsLoading: true,
+    applicantsLoading: false,
     applicantLoading: true,
     error: null,
 

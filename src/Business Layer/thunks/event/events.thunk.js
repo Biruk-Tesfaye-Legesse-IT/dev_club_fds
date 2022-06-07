@@ -62,13 +62,96 @@ const deleteEvent = (data) => (dispatch) => {
         .catch((error) => dispatch(eventActions.eventDeleteError(error.message)));    
 };
 
+const checkTeam = (eventID) => (dispatch) => {
+    dispatch (eventActions.checkingTeam());
+    EventDataService.checkTeam(eventID)
+        .then((response) => {
+            console.log('response', response.data);
+            dispatch(eventActions.teamChecked(response.data))
+        }
+        )
+        .catch((error) => dispatch(eventActions.teamCheckError(error.message)));
+};
+
+const buildTeam = (eventID) => (dispatch) => {
+    dispatch(eventActions.teamBuilding());
+
+    EventDataService.buildTeams(eventID)
+        .then((response) => {   
+            console.log('response', response.data);
+            dispatch(eventActions.teamBuilt(response.data))
+        
+        })
+        .catch((error) => dispatch(eventActions.teamBuildErrror(error.message)));
+};
+
+
+
+const assignScout = (eventID, scoutsArray) => (dispatch) => {
+    dispatch(eventActions.assigningScout());
+    
+
+    // EventDataService.getScoutsArray(eventID)
+    //     .then((response) => {
+    //         let assignedScouts = response.data.scouts;
+    //         scoutsArray.push(...assignedScouts);
+    //         scoutsArray.push(scoutID);
+    //         EventDataService.assignScout(eventID, scoutsArray).then((response) => {
+    //             console.log('response', response.data);
+    //             dispatch(eventActions.scoutAssigned(response.data))
+    //         }, (error) => {
+    //             dispatch(eventActions.scoutAssignError(error.message))
+    //         })
+    //     })
+
+    EventDataService.assignScout(eventID, scoutsArray).then((response) => {
+        console.log('response', response.data);
+        dispatch(eventActions.scoutAssigned(response.data))
+    }, (error) => {
+        dispatch(eventActions.scoutAssignError(error.message))
+    })
+
+   
+
+    // EventDataService.assignScout(eventID, scoutID)
+    //     .then((response) => {
+    //         console.log('response', response.data);
+    //         dispatch(eventActions.scoutAssigned(response.data))
+    //     })
+    //     .catch((error) => dispatch(eventActions.scoutAssignError(error.message)));
+}
+
+// const getScoutsNames = (eventID) => (dispatch) => {
+//     dispatch(eventActions.gettingScoutsNames());
+
+//     Eve
+
+
+
+const closeEvent = (eventID) => (dispatch) => {
+    dispatch(eventActions.eventClosing());
+
+    EventDataService.closeEvent(eventID)
+        .then((response) => {  
+            console.log('response', response.data);
+            dispatch(eventActions.eventClosed(response.data))
+        })
+        .catch((error) => dispatch(eventActions.eventCloseError(error.message)));
+}
+
+
+
+
+
 
 export {
-
     getEvents,
     getEvent,
     updateEvent,
     createEvent,
     deleteEvent,
-    
+    assignScout,
+    checkTeam,
+    buildTeam,
+    closeEvent
 }

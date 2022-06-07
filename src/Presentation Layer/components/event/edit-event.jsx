@@ -120,7 +120,7 @@ const EditEventComponent = function (props) {
     ending_date: props.events.event.ending_date,
     location: props.events.event.location,
     education_level: props.events.event.education_level,
-    required_position: props.events.event.required_position,
+    required_positions: props.events.event.required_positions,
     age_limit: props.events.event.age_limit,
     gender: props.events.event.gender,
     session_time_for_each: props.events.event.session_time_for_each
@@ -139,7 +139,8 @@ const EditEventComponent = function (props) {
           ending_date: props.events.event.ending_date,
           location: props.events.event.location,
           education_level: props.events.event.education_level,
-          required_position: props.events.event.required_position,
+          required_positions: props.events.event.required_positions,
+          age_limit: props.events.event.age_limit,
           gender: props.events.event.gender,
           session_time_for_each: props.events.event.session_time_for_each
         },
@@ -155,8 +156,8 @@ const EditEventComponent = function (props) {
     console.log('Values', values);
     props.updateevent(id, values);
     // props.getevent(id);
-    // props.getevents();
-    // navigate('/');
+    props.getevents();
+    navigate('/');
   };
 
   const handleStartingDateChange = (newDate) => {

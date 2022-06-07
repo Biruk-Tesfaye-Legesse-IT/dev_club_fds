@@ -14,8 +14,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import validateEmail from '../../validation/auth/validateEmail';
-import validatePassword from '../../validation/auth/validatePassword';
+import {validateEmail, validatePassword} from '../../validation/auth/validateLogin';
+
 
 import ErrorMessage from '../../components/auth/error-message';
 

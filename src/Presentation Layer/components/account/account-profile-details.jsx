@@ -17,12 +17,6 @@ import {
 import { getAccount, updateAccount } from "../../../Business Layer/thunks/account/account.thunk";
 import {connect} from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
-import Icon from '@mui/material/Icon';
-import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone';
-import {ChangePassword} from './change-password';
-
-
 
 const states = [
   {
@@ -73,7 +67,7 @@ const AccountProfileDetails = (props) => {
 
   const handleSubmit = (event) => {
   
-    // event.preventDefault();
+    // if (vali)
     console.log('Submit: ', values);
     props.updateaccount(user.id,values);
   };

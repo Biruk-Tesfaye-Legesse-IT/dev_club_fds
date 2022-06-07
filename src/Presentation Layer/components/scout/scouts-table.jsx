@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardHeader,
+  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -28,7 +29,7 @@ import DeleteRounded from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
-import { getScouts, getScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
+import { getScouts, getScout, deleteScout } from "../../../Business Layer/thunks/scout/scouts.thunk";
 
 import DetailsModal from './modal';
 
@@ -183,65 +184,49 @@ const ScoutsTable = function (props) {
 
         {/* ============================= */}
          <TableCell>
-          {/* <Button onClick={() => navigate(`/editScout/${scout.id}`)}>
-            <EditRoundedIcon color='secondary'/>
-          </Button> */}
-          {/* <Button  onClick={() => {
-            props.getscout(scout.id);
-            setOpenModal(true);
-            }}
-            data-toggle="modal"
-            > */}
-            <Button onClick={() => {}}>
+          
+            <Button onClick={() => { props.deletescout(scout.id) }}>
               <DeleteRounded color='secondary'/>
           </Button>
         </TableCell> 
 
-        {/* <TableCell>
-          {format(scout.deadline, 'dd/MM/yyyy')}
-        </TableCell> */}
 
       </TableRow>
     ))}
   </TableBody>
   </Table>
-    {openModal && <DetailsModal openModal={openModal} setOpenModal={setOpenModal} id={3}/>}
+   
   </>
   )
   }
-  // else if (props.scouts.error) {
-  //   return <React.Fragment>{props.scouts.error}</React.Fragment>
-  // }
+  
  
   }    
 
   
 
       return(
-        // <Card {...props}>
+      
         <Card>
-          <CardHeader title="Scouts" action={<AddNewButton/>}/>
+          <CardHeader title={<h1>Scouts</h1>}
+          action={
+          
+          
+           <Box
+           sx={{ 
+            mt: 4,}}
+           ><AddNewButton/></Box>
+          }/>
+          {/* <CardContent> */}
           <PerfectScrollbar>
-            <Box sx={{ minWidth: 800 }}>
+            <Box sx={{ 
+              my: 0,
+              minWidth: 800 }}>
             {loadedShow()}
             </Box>
           </PerfectScrollbar>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              p: 2
-            }}
-          >
-            {/* <Button
-              color="primary"
-              endIcon={<ArrowRightIcon fontSize="small" />}
-              size="small"
-              variant="text"
-            >
-              View all
-            </Button> */}
-          </Box>
+         
+          {/* </CardContent> */}
         </Card>
         )
       
@@ -257,6 +242,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getscouts: () => dispatch(getScouts()),
     getscout: (id) => dispatch(getScout(id)),
+    deletescout: (id) => dispatch(deleteScout(id))
   };
 }
 
